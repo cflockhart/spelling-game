@@ -1,0 +1,779 @@
+{
+  "list": "2025-2026 School Spelling Bee Study List",
+  "level": "One Bee",
+  "words": [
+    {
+      "word": "tag",
+      "sentence": "The subwoofer in the trunk was so loud, it vibrated the tag like an aluminum can.",
+      "definition": "A small label.",
+      "origin": "Middle English tagge; akin to Middle Low German tagge, tacke twig, spike"
+    },
+    {
+      "word": "twigs",
+      "sentence": "They used twigs and leaves as a base to start the fire.",
+      "definition": "A small thin branch of a tree or bush.",
+      "origin": "Middle English twigge, from Old English; akin to Old High German zw\u012bg twig, Old English tw\u0101 two"
+    },
+    {
+      "word": "insects",
+      "sentence": "Our shed has several insect infestions, including ants, yellowjackets, and wasps.",
+      "definition": "An arthropod in the class Insecta, characterized by six legs, up to four wings, and a chitinous exoskeleton.",
+      "origin": "Latin insectum, from neuter of insectus, past participle of insecare to cut into, from in- + secare to cut"
+    },
+    {
+      "word": "moment",
+      "sentence": "Wait a moment, while I lock the front door.",
+      "definition": "A brief, unspecified amount of time.",
+      "origin": "Middle English, from Anglo-French, from Latin momentum movement, particle sufficient to turn the scales, moment, from mov\u0113re to move"
+    },
+    {
+      "word": "send",
+      "definition": "To cause to be conveyed by an intermediary to a destination.",
+      "origin": "Middle English, from Old English sendan; akin to Old High German sendan to send, Old English sith road, journey, Old Irish s\u00e9t path, way",
+      "sentence": "_I send away_; comp. of prep, \u1f00\u03c0\u03cc, _off_, and \u03c3\u03c4\u03ad\u03bb\u03bb\u03c9, _I send_; root \u03c3\u03c4\u03b5\u03bb, vowel changed, \u00a7 63; aug. cuts off final \u03bf of prep.,"
+    },
+    {
+      "word": "taffy",
+      "definition": "A sweet, chewy candy of molasses or brown sugar boiled until very thick and then pulled with the hands or by machine until the candy is glossy and holds its shape.",
+      "origin": "origin unknown",
+      "sentence": "This colored \"taffy\" is cut into circles about the size of a tortilla, and hung on a clothesline to dry out a bit more."
+    },
+    {
+      "word": "teeth",
+      "definition": "The ability to be enforced, or to be enforced to any useful effect.",
+      "sentence": "She dances through room after room until she finds the group scattered across a banquet, they look at her with huge eyes, all inky-black pupils, and smile wide, wide, wide, wide, wide smiles and if she shakes her head from left to right real fast she can see a fast white line of teeth blending from one head into and another\u0085 teeth, teeth, teeth\u0085 her cousin is clenching her teeth."
+    },
+    {
+      "word": "ajar",
+      "definition": "Partially opened.",
+      "origin": "earlier on char, from Middle English, from on + char turn"
+    },
+    {
+      "word": "deck",
+      "definition": "Any raised flat surface that can be walked on: a balcony; a porch; a raised patio; a flat rooftop.",
+      "origin": "Middle English dekke covering of a ship, from Middle Dutch *dec covering, probably from Middle Low German vordeck, from vordecken to cover, from vor- for- + decken to cover; akin to Old High German decchen to cover"
+    },
+    {
+      "word": "comfy",
+      "definition": "Comfortable.",
+      "origin": "+"
+    },
+    {
+      "word": "shortcut",
+      "definition": "A path between two points that is faster than the commonly used paths."
+    },
+    {
+      "word": "basil",
+      "definition": "A plant (Ocimum basilicum).",
+      "origin": "Middle English basyl, basyle, shortening (perhaps by confusion with Middle French basile \"basilisk\") of Middle French basilic or its source, Medieval Latin basilicon, borrowed from Greek basilik\u00f3n (for presumed basilik\u00f2n phyt\u00f3n \"royal plant\"), noun derivative from neuter of basilik\u00f3s \"royal\""
+    },
+    {
+      "word": "stuck",
+      "definition": "To become or remain attached; to adhere."
+    },
+    {
+      "word": "stretch",
+      "definition": "An act of stretching.",
+      "origin": "Middle English strecchen, from Old English streccan; akin to Old High German strecchan to stretch, Old English str\u00e6c firm, severe"
+    },
+    {
+      "word": "bait",
+      "definition": "Any substance, especially food, used in catching fish, or other animals, by alluring them to a hook, snare, trap, or net.",
+      "origin": "Middle English, from Old Norse beita; akin to Old English b\u01e3tan to bait, b\u012btan to bite"
+    },
+    {
+      "word": "triple",
+      "definition": "Three times or thrice the number, amount, size, etc",
+      "origin": "Middle English (Scots), from Late Latin triplare, from Latin triplus, adjective"
+    },
+    {
+      "word": "snug",
+      "definition": "A small, comfortable back room in a pub."
+    },
+    {
+      "word": "tight",
+      "definition": "having elements close together",
+      "origin": "Middle English tiht, thyht dense, solid, watertight, of Scandinavian origin; akin to Old Norse th\u0113ttr tight; akin to Middle High German d\u012bhte thick, Sanskrit tanakti it causes to coagulate"
+    },
+    {
+      "word": "lure",
+      "definition": "Something that tempts or attracts, especially one with a promise of reward or pleasure",
+      "origin": "Middle English, from Anglo-French lure, leure, of Germanic origin; akin to Middle High German luoder bait; perhaps akin to Old English lathian to invite, Old High German lad\u014dn"
+    },
+    {
+      "word": "satin",
+      "definition": "A cloth woven from silk, nylon or polyester with a glossy surface and a dull back. (The same weaving technique applied to cotton produces cloth termed sateen).",
+      "origin": "Middle English, from Anglo-French, probably from Arabic zayt\u016bn\u012b, literally, of Zayt\u016bn, seaport in China during the Middle Ages"
+    },
+    {
+      "word": "fish",
+      "definition": "A cold-blooded vertebrate animal that lives in water, moving with the help of fins and breathing with gills.",
+      "origin": "Middle English, from Old English fisc; akin to Old High German fisc fish, Latin piscis"
+    },
+    {
+      "word": "candy",
+      "definition": "Edible, sweet-tasting confectionery containing sugar, or sometimes artificial sweeteners, and often flavored with fruit, chocolate, nuts, herbs and spices, or artificial flavors.",
+      "origin": "Middle English sugre candy, partial translation of Middle French sucre candi, from Old French sucre sugar + Arabic qand\u012b candied, from qand crystallized sugar"
+    },
+    {
+      "word": "cluster",
+      "definition": "A group or bunch of several discrete items that are close to each other.",
+      "origin": "Middle English, from Old English clyster; akin to Old English clott clot"
+    },
+    {
+      "word": "ahoy",
+      "definition": "An utterance of this interjection.",
+      "origin": "a- (as in aha) + hoy"
+    },
+    {
+      "word": "hold",
+      "definition": "A grasp or grip.",
+      "origin": "Middle English holden, going back to Old English healdan, going back to Germanic *hald-a-, whence also Old High German haltan \"to protect, guard, hold,\" Old Saxon haldan, Old Norse halda, Gothic haldan \"to tend, graze (cattle)\"; perhaps, if -d- (going back to Indo-European *-dh-) is a root extension with resultative meaning, a derivative from the Indo-European base *kelh1- \"set in motion,\" with sense shift from \"pasture\" to \"keep, protect\" to \"hold\""
+    },
+    {
+      "word": "scrunch",
+      "definition": "To grind with the teeth, and with a crackling sound; to craunch.",
+      "origin": "alteration of"
+    },
+    {
+      "word": "forest",
+      "definition": "A dense uncultivated tract of trees and undergrowth, larger than woods.",
+      "origin": "Middle English, from Anglo-French, from Late Latin forestis (silva) unenclosed (woodland), from Latin foris outside"
+    },
+    {
+      "word": "signal",
+      "definition": "A sequence of states representing an encoded message in a communication channel.",
+      "origin": "Middle English, from Medieval Latin signale, from Late Latin, neuter of signalis of a sign, from Latin signum"
+    },
+    {
+      "word": "mind",
+      "definition": "The ability for rational thought.",
+      "origin": "Middle English, from Old English gemynd; akin to Old High German gimunt memory, Latin ment-, mens mind, mon\u0113re to remind, warn, Greek menos passion, resolve, mnasthai, mimn\u0113skesthai to remember"
+    },
+    {
+      "word": "ruby",
+      "definition": "A clear, deep, red variety of corundum, valued as a precious stone.",
+      "origin": "Middle English, from Anglo-French rubi, rubin, from Medieval Latin rubinus, from Latin rubeus reddish; akin to Latin ruber red"
+    },
+    {
+      "word": "hollow",
+      "definition": "Having a cavity, gap, or space within.",
+      "origin": "Middle English holgh, holugh, holwe, formally identical with holgh , with adjectival meaning apparently after hol, holle \"hollow, sunken,\" going back to Old English hol"
+    },
+    {
+      "word": "answer",
+      "definition": "A response or reply; something said or done in reaction to a statement or question.",
+      "origin": "Middle English, from Old English andswaru (akin to Old Norse andsvar answer); akin to Old English and- against, swerian to swear"
+    },
+    {
+      "word": "stay",
+      "definition": "A heavy rope or cable, usually of wire, used as a brace or support for a mast or spar.",
+      "origin": "Middle English, from Old English st\u00e6g; akin to Old Norse stag stay",
+      "sentence": "I call the Republican position to stay the course \u2019stay and pray\u2019\u2026\u2026\u2026counters \u2018cut and run\u2019 pretty well, wouldn\u2019t you say?"
+    },
+    {
+      "word": "close",
+      "definition": "An end or conclusion.",
+      "origin": "Middle English, from Anglo-French clos-, stem of clore, from Latin claudere to shut, close; perhaps akin to Greek kleiein to close",
+      "sentence": "While \"The Devil Inside\" remains my favorite GRENDEL story-arc, \"God and the Devil\" is a close *close* second."
+    },
+    {
+      "word": "spinning",
+      "definition": "The process of making fibrous material into yarn or thread."
+    },
+    {
+      "word": "shuffle",
+      "definition": "The act of shuffling cards.",
+      "origin": "perhaps irregular from",
+      "sentence": "Also lost in the shuffle is the bad foul by the Mavs player."
+    },
+    {
+      "word": "scrub",
+      "definition": "One who labors hard and lives meanly; a mean fellow.",
+      "origin": "Middle English, alteration of schrobbe, schrubbe shrub"
+    },
+    {
+      "word": "tackle",
+      "definition": "A device for grasping an object and an attached means of moving it, as a rope and hook.",
+      "origin": "Middle English takel; akin to Middle Dutch takel ship's rigging"
+    },
+    {
+      "word": "baffling",
+      "definition": "extremely confusing or difficult to understand",
+      "sentence": "I am baffled by the contradictions and omissions in the instructions."
+    },
+    {
+      "word": "dollop",
+      "definition": "A considerable lump, scoop, or quantity of something, especially soft food.",
+      "sentence": "Each pancake comes with a dollop of suspiciously soft butter in a tiny plastic cup.",
+      "origin": "origin unknown"
+    },
+    {
+      "word": "draw",
+      "definition": "The result of a contest that neither side has won; a tie.",
+      "sentence": "The game ended in a draw.",
+      "origin": "Middle English dragen, drawen, going back to Old English dragan (class VI strong verb) \"to drag, pull, move, pull out (a sword), bring,\" going back to Germanic *dragan- (whence also Old Frisian drega, draga \"to carry, bring, endure,\" Old Saxon dragan \"to carry, bring,\" Middle Dutch dr\u0101ghen, Old High German tragan, Old Icelandic draga \"to drag, pull,\" Gothic (ga)dragan \"to heap up, accumulate\"), of uncertain origin"
+    },
+    {
+      "word": "wire",
+      "definition": "Metal formed into a thin, even thread, now usually by being drawn through a hole in a steel die.",
+      "sentence": "This election is going to go right to the wire",
+      "origin": "Middle English wir, wyre, going back to Old English w\u012br, going back to Germanic *w\u012bra-, whence Middle Low German wire \"flexible metal, filigree,\" Old Norse v\u00edr-, in v\u00edravirki \"filigree work,\" and (with presumed lowering of \u012b to \u01132 before r) Old High German wiara, wiera \"fine gold, ornament of gold filigree,\" going back to a nominal derivative with a suffix -r- from Indo-European *u\u032fei\u032fH- \"plait, wrap,\" whence Latin vie\u014d, vi\u0113re \"to plait, weave,\" Old Church Slavic poviti \"to wrap up, bind,\" Lithuanian v\u00fdti \"to twist,\" and probably to Sanskrit vyayati \"(it) covers, envelops,\" v\u012bta- \"covered, hidden\""
+    },
+    {
+      "word": "sizzling",
+      "definition": "To make the sound of water hitting a hot surface.",
+      "sentence": "The song sizzled with energy.",
+      "origin": "perhaps frequentative of siss to hiss"
+    },
+    {
+      "word": "minnows",
+      "definition": "A small freshwater fish of the carp family, Phoxinus phoxinus.",
+      "origin": "Middle English menawe; akin to Old English myne minnow, Old High German munewa, a kind of fish"
+    },
+    {
+      "word": "brown",
+      "definition": "A colour like that of chocolate or coffee.",
+      "origin": "Middle English broun, from Old English br\u016bn; akin to Old High German br\u016bn brown, Greek phryn\u0113 toad"
+    },
+    {
+      "word": "skater",
+      "definition": "A person who skates."
+    },
+    {
+      "word": "hoist",
+      "definition": "A hoisting device, such as pulley or crane.",
+      "sentence": "Give me a hoist over that wall.",
+      "origin": "alteration of hoise"
+    },
+    {
+      "word": "silver",
+      "definition": "A lustrous, white, metallic element, atomic number 47, atomic weight 107.87, symbol Ag.",
+      "sentence": "to silver a pin;\u2002 to silver a glass mirror plate with an amalgam of tin and mercury",
+      "origin": "Middle English, from Old English seolfor; akin to Old High German silbar silver, Lithuanian sidabras"
+    },
+    {
+      "word": "cozy",
+      "definition": "Snug, comfortable, and warm. <i>synonym</i>: <strong> comfortable</strong>.",
+      "sentence": "He spent all day cosying up to the new boss, hoping for a plum assignment.",
+      "origin": "perhaps of Scandinavian origin; akin to Norwegian koselig cozy"
+    },
+    {
+      "word": "giant",
+      "definition": "A mythical human of very great size.",
+      "sentence": "The retail giant is set to acquire two more struggling high-street chains.",
+      "origin": "Middle English giaunt, from Anglo-French geant, from Latin gigant-, gigas, from Greek"
+    },
+    {
+      "word": "search",
+      "definition": "To move around in, go through, or look through in an effort to find something.",
+      "sentence": "With only five minutes until we were meant to leave, the search for the keys started in earnest.",
+      "origin": "Middle English cerchen, from Anglo-French cercher, sercher to travel about, investigate, search, from Late Latin circare to go about, from Latin circum round about"
+    },
+    {
+      "word": "before",
+      "definition": "At an earlier time.",
+      "sentence": "I've never done this before.",
+      "origin": "Middle English, adverb & preposition, from Old English beforan, from be- + foran before, from fore"
+    },
+    {
+      "word": "bucket",
+      "definition": "A container made of rigid material, often with a handle, used to carry liquids or small items.",
+      "origin": "Middle English, from Anglo-French buket, from Old English b\u016bc pitcher, belly; akin to Old High German b\u016bh belly"
+    },
+    {
+      "word": "remind",
+      "definition": "To cause one to experience a memory (of someone or something); to bring to the notice or consideration (of a person)."
+    },
+    {
+      "word": "circus",
+      "definition": "A traveling company of performers that may include acrobats, clowns, trained animals, and other novelty acts, that gives shows usually in a circular tent.",
+      "sentence": "The circus will be in town next week.",
+      "origin": "Middle English, from Latin, circle, circus"
+    },
+    {
+      "word": "tint",
+      "definition": "A slight coloring.",
+      "sentence": "Red and blue are different colors, but two shades of scarlet are different tints.",
+      "origin": "alteration of earlier tinct, from Latin tinctus act of dyeing, from tingere to tinge"
+    },
+    {
+      "word": "chance",
+      "definition": "An opportunity or possibility.",
+      "sentence": "We had the chance to meet the president last week.",
+      "origin": "Middle English chaunce, chance occurrence (especially unforeseen or providential), stroke of good or bad luck, luck, fall of the dice, borrowed from Anglo-French cheaunce, chaunce, chance, going back to Vulgar Latin *cadentia, noun derivative (formally feminine singular from neuter plural) of Latin cadent-, cadens, present participle of cadere to fall, be cast (of dice, lots), turn out, come to pass, perhaps going back to an Indo-European verbal base *\u1e31ad- or *\u1e31Hd- fall, whence also Sanskrit \u015ba\u015b\u0101da (s/he) fell off/out, \u015batsyati (s/he) will fall off/out"
+    },
+    {
+      "word": "mango",
+      "definition": "A tropical Asian fruit tree, Mangifera indica.",
+      "origin": "Portuguese manga, probably from Malayalam m\u0101\u1e45\u1e45a"
+    },
+    {
+      "word": "writing",
+      "definition": "Graphism of symbols such as letters that express some meaning.",
+      "sentence": "I can't read your writing."
+    },
+    {
+      "word": "milk",
+      "definition": "A whitish liquid containing proteins, fats, lactose, and various vitamins and minerals that is produced by the mammary glands of all mature female mammals after they have given birth and serves as nourishment for their young.",
+      "origin": "Middle English, from Old English meolc, milc; akin to Old High German miluh \"milk,\" Old English melcan \"to milk\""
+    },
+    {
+      "word": "baskets",
+      "definition": "A lightweight container, generally round, open at the top, and tapering toward the bottom.",
+      "origin": "Middle English, from Anglo-French; akin to Old French baschoue wooden vessel; both from Latin bascauda kind of basin, of Celtic origin; akin to Middle Irish basc necklace"
+    },
+    {
+      "word": "coral",
+      "definition": "A hard substance made of the limestone skeletons of marine polyps.",
+      "origin": "Middle English, from Anglo-French, from Latin corallium, from Greek korallion"
+    },
+    {
+      "word": "kitchen",
+      "definition": "A room or area for preparing food.",
+      "origin": "Middle English kichene, from Old English cycene, from Late Latin coquina, from Latin coquere to cook"
+    },
+    {
+      "word": "yawn",
+      "definition": "The action of yawning; opening the mouth widely and taking a long, rather deep breath, often because one is tired or bored.",
+      "origin": "Middle English yenen, yanen, from Old English ginian; akin to Old High German gin\u0113n to yawn, Latin hiare, Greek chainein"
+    },
+    {
+      "word": "tender",
+      "definition": "Care, kind concern, regard.",
+      "origin": "Middle English tendre, tender, borrowed from Anglo-French tendre, going back to Latin tener \"soft, delicate (of persons or parts of the body), immature, yielding easily, sensitive,\" probably by metathesis from *terenos or *terunos, going back to Indo-European, whence also Greek t\u00e9r\u0113n \"soft, tender,\" Sanskrit taru\u1e47a- \"young, tender, fresh,\" Avestan tauruna- \"young,\" (as noun) \"boy\""
+    },
+    {
+      "word": "jangle",
+      "definition": "A rattling metallic sound.",
+      "origin": "Middle English, from Anglo-French jangler, of Germanic origin; akin to Middle Dutch jangelen to grumble"
+    },
+    {
+      "word": "sugar",
+      "definition": "Sucrose in the form of small crystals, obtained from sugar cane or sugar beet and used to sweeten food and drink.",
+      "origin": "Middle English sugre, sucre, from Anglo-French sucre, from Medieval Latin zuccarum, from Old Italian zucchero, from Arabic sukkar, from Persian shakar, ultimately from Sanskrit \u015barkar\u0101; akin to Sanskrit \u015barkara pebble"
+    },
+    {
+      "word": "tank",
+      "definition": "A closed container for liquids or gases.",
+      "origin": "Portuguese tanque, alteration of estanque, from estancar to stanch, perhaps from Vulgar Latin *stanticare"
+    },
+    {
+      "word": "paste",
+      "definition": "A soft moist mixture, in particular:",
+      "origin": "Middle English, from Anglo-French, from Late Latin pasta dough, paste"
+    },
+    {
+      "word": "shimmer",
+      "definition": "A faint or veiled and tremulous gleam or shining.",
+      "origin": "Middle English schimeren, from Old English scimerian; akin to Old English sc\u012bnan to shine"
+    },
+    {
+      "word": "awkward",
+      "definition": "Someone or something that is awkward.",
+      "origin": "Middle English awkeward in the wrong direction, from awke turned the wrong way, from Old Norse \u01ebfugr; akin to Old High German abuh turned the wrong way"
+    },
+    {
+      "word": "want",
+      "definition": "A desire, wish, longing.",
+      "origin": "Middle English, from Old Norse vanta; akin to Old English wan deficient"
+    },
+    {
+      "word": "melon",
+      "definition": "Any of various plants of the family Cucurbitaceae grown for food, generally not including the cucumber.",
+      "origin": "Middle English, from Middle French, from Late Latin melon-, melo, short for Latin melopepon-, melopepo, from Greek m\u0113lopep\u014dn, from m\u0113lon apple + pep\u014dn, an edible gourd"
+    },
+    {
+      "word": "blossoms",
+      "definition": "A flower, especially one indicating that a fruit tree is fruiting; a mass of such flowers.",
+      "origin": "Middle English blosme, from Old English bl\u014dstm; akin to Old English bl\u014dwan"
+    },
+    {
+      "word": "seep",
+      "definition": "To pass slowly through small openings or pores; ooze.",
+      "origin": "alteration of earlier sipe, from Middle English sipen, from Old English sipian; akin to Middle Low German sipen to seep",
+      "sentence": "He paused again, letting the name seep into the minds of those assembled and waiting for the general reaction."
+    },
+    {
+      "word": "crowd",
+      "definition": "A large number of persons gathered together; a throng.",
+      "origin": "Middle English crouden \"to push forward, jostle, press, push or drive (something wheeled),\" going back to Old English cr\u016bdan \"to crowd, press (against), press forward (of a ship),\" going back to Germanic *kr\u016bdan- \"to press, push forward\" (whence also Middle Dutch cr\u00fbden \"to push, shove, trundle,\" Norwegian regional kryda (preterit kraud) \"to flow together, congregate\"), of uncertain origin",
+      "sentence": "The term \"crowd pleaser\" is a real backhanded compliment in comedy, being associated with stale, hackneyed, button-pushing routines."
+    },
+    {
+      "word": "farmer",
+      "definition": "One who works on or operates a farm.",
+      "sentence": "The - er of farmer does not quite say \u0093one who (farms) \u0094 it merely indicates that the sort of person we call a \u0093farmer\u0094 is closely enough associated with activity on a farm to be conventionally thought of as always so occupied."
+    },
+    {
+      "word": "swampy",
+      "definition": "Pertaining to a swamp; consisting of swamp; like a swamp; low, wet, and spongy: as, <em>swampy</em> land."
+    },
+    {
+      "word": "sweet",
+      "definition": "The basic taste sensation induced by sugar.",
+      "origin": "Middle English swete, from Old English sw\u0113te; akin to Old High German suozi sweet, Latin suad\u0113re to urge, suavis sweet, Greek h\u0113dys"
+    },
+    {
+      "word": "pond",
+      "definition": "An inland body of standing water, either natural or man-made, that is smaller than a lake.",
+      "origin": "Middle English ponde artificially confined body of water, probably alteration of pounde enclosure"
+    },
+    {
+      "word": "parent",
+      "definition": "One of the two persons from whom one is immediately biologically descended; a mother or father.",
+      "origin": "Middle English, borrowed from Anglo-French & Latin; Anglo-French, borrowed from Latin parent-, parens \"father or mother, progenitor, ancestor,\" probably from an aorist participle of parere \"to give birth to, bring into being, produce\""
+    },
+    {
+      "word": "studded",
+      "definition": "Having studs."
+    },
+    {
+      "word": "wheels",
+      "definition": "A circular device capable of rotating on its axis, facilitating movement or transportation or performing labour in machines.",
+      "origin": "Middle English, from Old English hweogol, hw\u0113ol; akin to Old Norse hv\u0113l wheel, Greek kyklos circle, wheel, Skt cakra, Latin colere to cultivate, inhabit, Sanskrit carati he moves, wanders"
+    },
+    {
+      "word": "skirt",
+      "definition": "An article of clothing, usually worn by women and girls, that hangs from the waist and covers the lower part of the body.",
+      "origin": "Middle English, from Old Norse skyrta shirt, kirtle"
+    },
+    {
+      "word": "tail",
+      "definition": "The caudal appendage of an animal that is attached to its posterior and near the anus.",
+      "origin": "Middle English, from Old English t\u00e6gel; akin to Old High German zagal tail, Middle Irish d\u00faal lock of hair"
+    },
+    {
+      "word": "focus",
+      "definition": "A point at which reflected or refracted rays of light converge.",
+      "origin": "New Latin, from Latin, hearth"
+    },
+    {
+      "word": "faint",
+      "definition": "The act of fainting, syncope.",
+      "origin": "Middle English feint, faynt \"deceiving, false, lacking in spirit or courage, listless, wearied, feeble, pale,\" borrowed from Anglo-French, \"deceiving, false, lacking in spirit, weak,\" from present participle of feindre, faindre \"to make, fabricate, pretend, dissemble, lose heart, fade\""
+    },
+    {
+      "word": "sharks",
+      "definition": "A scaleless, predatory fish of the superorder Selachimorpha, with a cartilaginous skeleton and 5 to 7 gill slits on each side of its head."
+    },
+    {
+      "word": "hockey",
+      "definition": "Ice hockey, a game on ice in which two teams of six players skate and try to score by shooting a puck into the opposing team's net, using their sticks.",
+      "origin": "perhaps from Middle French hoquet shepherd's crook, diminutive of hoc hook, of Germanic origin; akin to Old English h\u014dc hook"
+    },
+    {
+      "word": "distress",
+      "definition": "(Cause of) discomfort.",
+      "origin": "Middle English destresse, from Anglo-French destresce, from Vulgar Latin *districtia, from Latin districtus, past participle of distringere see"
+    },
+    {
+      "word": "fruit",
+      "definition": "(often in the plural) In general, a product of plant growth useful to man or animals.",
+      "origin": "Middle English fruit, frute, froyte, fructe, borrowed from Anglo-French fruit, frut (also continental Old French), going back to Latin fr\u016bctus \"pleasurable possession (of something), right to enjoy the profits (of something), useful products of nature, fruit, profit, advantage,\" from fr\u016bg-, base of fruor, fru\u012b \"to enjoy the produce or proceeds of, derive advantage from, be blessed with, derive pleasure from\" (probably going back to *fr\u016bu\u032f\u014dr < *fr\u016bi\u032f\u014dr < *fr\u016bgi\u032f\u014dr, from a dialectal Indo-European verbal base *bhruHg- \"enjoy, use\") + -tus, suffix of action nouns",
+      "sentence": "We question, however, whether this hypertrophy of fruit or vegetables improves their flavour; give us _English vegetables_ -- ay, and _English fruit_."
+    },
+    {
+      "word": "quilt",
+      "definition": "A coverlet or blanket made of two layers of fabric with a layer of cotton, wool, feathers, or down in between, all stitched firmly together, usually in a decorative design.",
+      "origin": "Middle English quilte mattress, quilt, from Anglo-French coilte, from Latin culcita mattress",
+      "sentence": "The round robin quilt is beautiful - I am sure the recipient will really enjoy it."
+    },
+    {
+      "word": "slime",
+      "definition": "A thick, sticky, slippery substance.",
+      "origin": "Middle English, from Old English sl\u012bm; akin to Middle High German sl\u012bm slime, Latin limus mud",
+      "sentence": "I didn\u0092t see any strings on the rocket ship, but when you see the plastic slime inching up the ramp toward our crew, you know it\u0092s a plastic sheet of \u0093slime\u0094, and the freaky tie-dye technique with the Venus sky is pure 1960s state of the art."
+    },
+    {
+      "word": "lessons",
+      "definition": "A section of learning or teaching into which a wider learning content is divided.",
+      "origin": "Middle English, from Anglo-French le\u00e7on, from Late Latin lection-, lectio, from Latin, act of reading, from legere to read"
+    },
+    {
+      "word": "roam",
+      "definition": "To move about without purpose or plan; wander. <i>synonym</i>: <strong> wander</strong>.",
+      "origin": "Middle English romen"
+    },
+    {
+      "word": "goats",
+      "definition": "A mammal, Capra aegagrus hircus, and similar species of the genus Capra.",
+      "origin": "Middle English gote, from Old English g\u0101t; akin to Old High German geiz goat, Old Norse geit, Latin haedus kid"
+    },
+    {
+      "word": "disability",
+      "definition": "State of being disabled; deprivation or want of ability; absence of competent physical, intellectual, or moral power, means, fitness, and the like.",
+      "origin": "+ , after"
+    },
+    {
+      "word": "woozy",
+      "definition": "mentally unclear or hazy",
+      "origin": "origin unknown"
+    },
+    {
+      "word": "incredible",
+      "definition": "Too implausible to be credible; beyond belief; unbelievable.",
+      "origin": "Middle English, from Latin incredibilis, from in- + credibilis credible"
+    },
+    {
+      "word": "valentine",
+      "definition": "An expression of affection, especially romantic affection, usually in the form of greeting card, gift, or message given the object of one's affection, especially on February 14th.",
+      "origin": "Middle English valentyn, after Seint Valentynes day"
+    },
+    {
+      "word": "limbs",
+      "definition": "A major appendage of human or animal, used for locomotion (such as an arm, leg or wing).",
+      "origin": "see"
+    },
+    {
+      "word": "leather",
+      "definition": "A tough material produced from the skin of animals, by tanning or similar process, used e.g. for clothing.",
+      "origin": "Middle English lether, from Old English lether-; akin to Old High German leder leather, Old Irish lethar"
+    },
+    {
+      "word": "ahead",
+      "definition": "In or to the front; in advance; onward."
+    },
+    {
+      "word": "countess",
+      "definition": "The wife of a count or earl."
+    },
+    {
+      "word": "se\u00f1or",
+      "definition": "A Spanish term of address equivalent to sir or Mr., used alone or capitalized and prefixed to the name of a married or an older man."
+    },
+    {
+      "word": "nervous",
+      "definition": "Of sinews and tendons.",
+      "origin": "Middle English, borrowed from Anglo-French & Latin; Anglo-French nervus, nervous, borrowed from Latin nerv\u014dsus \"full of tendons, sinewy, tough, vigorous (of a person or literary style),\" from nervus \"sinew, muscle, \" + -\u014dsus"
+    },
+    {
+      "word": "unicorn",
+      "definition": "A mythical beast resembling a horse or deer with a single, straight, spiraled horn projecting from its forehead.",
+      "origin": "Middle English unicorne, from Anglo-French, from Late Latin unicornis, from Latin, having one horn, from uni- + cornu horn"
+    },
+    {
+      "word": "peppercorn",
+      "definition": "The seeds of the plant Piper nigrum. Commonly used as a spice, usually but not always ground or crushed."
+    },
+    {
+      "word": "faraway",
+      "definition": "Distant."
+    },
+    {
+      "word": "cartwheel",
+      "definition": "The literal wheel of a cart."
+    },
+    {
+      "word": "heater",
+      "definition": "A device that produces and radiates heat, typically to raise the temperature of a room or building."
+    },
+    {
+      "word": "raise",
+      "definition": "An increase in wages or salary; a rise (UK).",
+      "origin": "Middle English reisen, raisen, from Old Norse reisa"
+    },
+    {
+      "word": "pirates",
+      "definition": "A criminal who plunders at sea; commonly attacking merchant vessels, though often pillaging port towns.",
+      "origin": "Middle English, from Middle French or Latin; Middle French, from Latin pirata, from Greek peirat\u0113s, from peiran to attempt"
+    },
+    {
+      "word": "weather",
+      "definition": "The short term state of the atmosphere at a specific time and place, including the temperature, relative humidity, cloud cover, precipitation, wind, etc.",
+      "origin": "Middle English weder, from Old English; akin to Old High German wetar weather, Old Church Slavic vetr\u016d wind"
+    },
+    {
+      "word": "understand",
+      "definition": "To grasp a concept fully and thoroughly, especially (of words, statements, art, etc.) to be aware of the meaning of and (of people) to be aware of the intent of.",
+      "origin": "Middle English, from Old English understandan, from under + standan to stand"
+    },
+    {
+      "word": "zooming",
+      "definition": "To communicate with someone using the Zoom videoconferencing software.",
+      "origin": "imitative"
+    },
+    {
+      "word": "wooden",
+      "definition": "Made or consisting of wood.",
+      "sentence": "On a recent windy day, hundreds of visitors climbed wooden stairs to take pictures in front of the glacier."
+    },
+    {
+      "word": "attacked",
+      "definition": "affected by disease.",
+      "origin": "Middle French attaquer, from Old Italian *estaccare to attach, from stacca stake, of Germanic origin; akin to Old English staca",
+      "sentence": "Sergei Berezin attacked from the right side, but Dunham kicked out his pad to make the save."
+    },
+    {
+      "word": "leaning",
+      "definition": "An inclination, tendency, or preference. <i>synonym</i>: <strong> predilection</strong>."
+    },
+    {
+      "word": "turnout",
+      "definition": "The number of people who participate in a particular event or activity."
+    },
+    {
+      "word": "breakfast",
+      "definition": "The first meal of the day, usually eaten in the morning.",
+      "origin": "Middle English brekfast, from the phrase breken fast \"to break one's fast, end abstinence from food\""
+    },
+    {
+      "word": "eaten",
+      "definition": "To ingest; to be ingested.",
+      "origin": "Middle English eten, from Old English etan; akin to Old High German ezzan to eat, Latin edere, Greek edmenai"
+    },
+    {
+      "word": "window",
+      "definition": "The inedible parts of a grain-producing plant.",
+      "origin": "Middle English windowe, from Old Norse vindauga, from vindr wind (akin to Old English wind) + auga eye; akin to Old English \u0113age eye"
+    },
+    {
+      "word": "streetlights",
+      "definition": "Any large outdoor light used to illuminate a public area, usually urban."
+    },
+    {
+      "word": "acrobat",
+      "definition": "An athlete who performs acts requiring skill, agility and coordination.",
+      "origin": "borrowed from French acrobates, acrobate, borrowed from Middle Greek akrob\u00e1t\u0113s \"tightrope walker,\" agent derivative of Greek akr\u00f3batos \"walking on tiptoe,\" from akro- + -batos, verbal adjective from ba\u00ednein \"to walk, go\""
+    },
+    {
+      "word": "journey",
+      "sentence": "my journey of dealing with grief",
+      "definition": "A set amount of travelling, seen as a single unit; a discrete trip, a voyage.",
+      "origin": "Middle English, from Anglo-French jurnee day, day's journey, from jur day, from Late Latin diurnum, from Latin, neuter of diurnus of the day"
+    },
+    {
+      "word": "message",
+      "definition": "A communication, or what is communicated; any concept or information conveyed.",
+      "origin": "Middle English, from Anglo-French, from Medieval Latin missaticum, from Latin missus, past participle of mittere"
+    },
+    {
+      "word": "courtyard",
+      "sentence": "She sat in the courtyard, enjoying the garden.",
+      "definition": "An area, open to the sky, partially or wholly surrounded by walls or buildings."
+    },
+    {
+      "word": "chocolate",
+      "sentence": "Chocolate is a very popular treat.",
+      "definition": "A food made from ground roasted cocoa beans.",
+      "origin": "Spanish, from Nahuatl chocol\u0101tl, probably an alteration of eastern Nahuatl dialect chikol\u0101tl, from chikolli hook (probably used to refer to the beater used to mix chocolate with water) + \u0101tl water, liquid"
+    },
+    {
+      "word": "shouting",
+      "sentence": "They shouted his name to get his attention.",
+      "definition": "To utter a sudden and loud cry, as in joy, triumph, exultation or anger, or to attract attention, to animate others, etc.",
+      "origin": "Middle English"
+    },
+    {
+      "word": "forepaw",
+      "definition": "Either of the paws of an animal's foreleg, homologous to the hand in humans."
+    },
+    {
+      "word": "asleep",
+      "sentence": "I was asleep when you called.",
+      "definition": "In a state of sleep; also, broadly, resting.",
+      "origin": "Middle English aslepe, from Old English on sl\u00e6pe"
+    },
+    {
+      "word": "elephant",
+      "sentence": "Let's play hide and seek. I'll count. One elephant, two elephant, three elephant...",
+      "definition": "A mammal of the order Proboscidea, having a trunk, and two large ivory tusks jutting from the upper jaw.",
+      "origin": "Middle English, from Anglo-French & Latin; Anglo-French olifant, elefant, from L. elephantus, from Greek elephant-, elephas"
+    },
+    {
+      "word": "curious",
+      "sentence": "Young children are naturally curious about the world and everything in it.",
+      "definition": "Tending to ask questions, or to want to explore or investigate; inquisitive; (with a negative connotation) nosy, prying.",
+      "origin": "Middle English, from Anglo-French curios, from Latin curiosus careful, inquisitive, from cura cure"
+    },
+    {
+      "word": "hedgehog",
+      "definition": "Any of several small insectivorous mammals of the subfamily Erinaceinae, native to Eurasia and Africa and naturalized in New Zealand, having dense erectile spines covering the back and sides and characteristically rolling into a ball for protection.",
+      "origin": "Middle English heyghoge, from heyg, hegge + hoge, hogge",
+      "sentence": "Last night, however, I bought a - hedgehog from a wee boy."
+    },
+    {
+      "word": "dinosaur",
+      "definition": "In scientific usage, any of the animals belonging to the clade Dinosauria, especially those that existed during the Triassic, Jurassic and Cretaceous periods and are now extinct.",
+      "origin": "borrowed from presumed New Latin *dinosaurus, the base of Dinosauria, former reptile taxon, from Greek dein\u00f3s inspiring dread or awe + -o- + New Latin Sauria, former reptile suborder, from Greek sa\u00faros \"lizard\" + New Latin -ia ,",
+      "sentence": "The name dinosaur comes from the Greek words for \u0093monstrous lizard."
+    },
+    {
+      "word": "recipe",
+      "definition": "A set of directions with a list of ingredients for making or preparing something, especially food.",
+      "sentence": "His new approach is definitely a recipe for success.",
+      "origin": "Latin, take, imperative of recipere to take, receive"
+    },
+    {
+      "word": "brilliant",
+      "sentence": "the brilliant lights along the promenade",
+      "definition": "A finely cut gemstone, especially a diamond, cut in a particular form with numerous facets so as to maximize light return through the top (called \"table\") of the stone.",
+      "origin": "French brillant, present participle of briller to shine, from Italian brillare"
+    },
+    {
+      "word": "garbage",
+      "sentence": "Garbage is collected on Tuesdays; rubbish on Fridays",
+      "definition": "Food waste material of any kind.",
+      "origin": "Middle English, \"poultry organs and body parts used for food, poultry refuse,\" borrowed from Anglo-French *garbage (implied in sergant garbagere \"kitchen servant tasked with plucking and cleaning poultry\"), of obscure origin"
+    },
+    {
+      "word": "vacuum",
+      "sentence": "a vacuum of 26 inches of mercury, or 13 pounds per square inch",
+      "definition": "A region of space that contains no matter.",
+      "origin": "borrowed from Medieval Latin (translation of Greek ken\u00f3n), from neuter of Latin vacuus \"empty, unoccupied,\" from vac\u0101re \"to be empty or unoccupied, have space, be free\" + -uus, deverbal adjective suffix"
+    },
+    {
+      "word": "surprise",
+      "sentence": "It was a surprise to find out I owed twice as much as I thought I did.",
+      "definition": "Something unexpected.",
+      "origin": "Middle English suppryse exaction, seizure, from Anglo-French sousprise, supprise, from feminine of supris, surpris, suspris, past participle of surprendre & susprendre to capture, take by surprise, from sur- & sus-, suz under + prendre to take ,"
+    },
+    {
+      "word": "gorgeous",
+      "sentence": "All the contest judges agreed that Brigitt was absolutely gorgeous.",
+      "definition": "(of a person or place) Very beautiful.",
+      "origin": "Middle English gorgeouse, from Middle French gorgias elegant, perhaps from gorgias wimple, from gorge throat"
+    },
+    {
+      "word": "mermaid",
+      "sentence": "mermaid smoothie",
+      "definition": "a fabled marine creature with the head and upper body of a woman and the tail of a fish",
+      "origin": "Middle English mermayde, from mere sea (from Old English) + mayde maid"
+    },
+    {
+      "word": "monsoon",
+      "definition": "Any of a number of winds associated with regions where most rain falls during a particular season.",
+      "origin": "obsolete Dutch monssoen, from Portuguese mon\u00e7\u00e3o, from Arabic mawsim time, season"
+    },
+    {
+      "word": "bombarded",
+      "definition": "To continuously attack something with bombs, artillery shells or other missiles or projectiles.",
+      "origin": "earlier, \"to fire a large cannon,\" borrowed from Middle French bombarder, verbal derivative of bombarde"
+    },
+    {
+      "word": "dangerous",
+      "sentence": "Railway crossings without gates are highly dangerous.",
+      "definition": "Full of danger.",
+      "origin": "see"
+    },
+    {
+      "word": "avocado",
+      "definition": "The large, usually yellowish-green or black, pulpy fruit of the avocado tree.",
+      "origin": "modification of Spanish aguacate, from Nahuatl \u0101huacatl avocado, testicle"
+    },
+    {
+      "word": "February",
+      "definition": "The second month of the year in the Gregorian calendar.",
+      "origin": "Middle English Februarie, from Old English Februarius, from Latin, from Februa, plural, feast of purification"
+    },
+    {
+      "word": "formation",
+      "definition": "Something possessing structure or form."
+    },
+    {
+      "word": "especially",
+      "definition": "(manner) In a special manner; specially."
+    }
+  ],
+  "total_words": 150
+}

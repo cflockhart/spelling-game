@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A fun and interactive Spelling Bee game for kids and students. Practice spelling with different difficulty levels, themes, and modes. Improve vocabulary and spelling skills.">
+    <meta name="keywords" content="spelling bee, spelling game, kids spelling, learn to spell, vocabulary game, educational game, spelling practice, word game, school spelling bee">
+    <meta property="og:title" content="Spelling Bee: Interactive Spelling Game">
+    <meta property="og:description" content="Practice spelling with fun themes and modes. Perfect for students preparing for a spelling bee.">
+    <meta property="og:type" content="website">
+    <title>Spelling Bee: School Modes</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; text-align: center; padding: 15px; background-color: #e8f5e9; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: 4px solid #2e7d32; }
+        .word-display { font-size: 26px; font-weight: bold; color: #1b5e20; margin: 20px 0; min-height: 40px; border-bottom: 2px dashed #81c784; }
+        .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
+        button, select { padding: 12px; font-size: 16px; cursor: pointer; border: none; border-radius: 8px; font-weight: 600; transition: 0.2s; width: 100%; box-sizing: border-box; }
+        
+        #voice-select { background-color: #e3f2fd; color: #1565c0; grid-column: span 2; margin-bottom: 10px; border: 1px solid #bbdefb; }
+        .settings { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        #list-select, #difficulty-select, #timer-select { background-color: #455a64; color: white; }
+        
+        /* Button Colors */
+        #start-btn { background-color: #0277bd; color: white; } 
+        #repeat-btn { background-color: #0097a7; color: white; } 
+        #slow-btn { background-color: #00bcd4; color: white; }
+        #listen-btn { background-color: #2e7d32; color: white; } 
+        #sent-btn { background-color: #009688; color: white; } 
+        #def-btn { background-color: #6a1b9a; color: white; } 
+        #origin-btn { background-color: #5d4037; color: white; }
+        #hint-btn { background-color: #ff9800; color: white; }
+        #skip-btn { background-color: #78909c; color: white; grid-column: span 2; }
+        #clear-btn { background-color: #c62828; color: white; grid-column: span 2; } 
+        #submit-btn { background-color: #fbc02d; color: #37474f; grid-column: span 2; } 
+        
+        #scoreboard { background: #212121; color: #fff; padding: 10px; border-radius: 8px; font-size: 20px; font-weight: bold; font-family: monospace; letter-spacing: 1px; margin-top: 20px; border: 3px solid #fff; box-shadow: 0 3px 10px rgba(0,0,0,0.3); white-space: nowrap; transition: all 0.3s; }
+        
+        .streak-5 { background-color: #fff176 !important; color: #000 !important; border-color: #fdd835 !important; }
+        .streak-10 { background-color: #ffb74d !important; color: #000 !important; border-color: #fb8c00 !important; box-shadow: 0 0 10px #ffb74d; }
+        .streak-20 { background-color: #ff5722 !important; color: #fff !important; border-color: #e64a19 !important; box-shadow: 0 0 20px #ff3d00; animation: burn 0.8s infinite alternate; }
+        
+        @keyframes burn { from { box-shadow: 0 0 10px #ff5722; transform: scale(1); } to { box-shadow: 0 0 25px #ffeb3b, 0 0 10px #ff5722 inset; transform: scale(1.02); } }
+        .flying-shield { position: fixed; z-index: 2000; pointer-events: none; }
+
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); }
+        .modal-content { background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%; max-width: 500px; border-radius: 10px; text-align: center; }
+        .modal-content h2 { color: #2e7d32; }
+        .modal-content ul { list-style-type: none; padding: 0; }
+        .modal-content li { background: #ffebee; margin: 5px; padding: 5px; border-radius: 4px; color: #c62828; }
+
+        #status-bar { font-size: 13px; color: #555; margin-top: 10px; padding: 8px; background: #f1f8e9; border-radius: 4px; font-style: italic; }
+        .transcript-view { font-size: 22px; color: #0d47a1; margin: 15px 0 20px 0; font-family: monospace; letter-spacing: 2px; border: 2px solid #bbdefb; padding: 10px; border-radius: 8px; min-height: 45px; background: #fff; outline: none; }
+        #timer-bar { width: 100%; height: 10px; background: #ddd; border-radius: 5px; margin: 10px 0; overflow: hidden; }
+        #timer-fill { height: 100%; background: #4caf50; width: 100%; transition: width 1s linear, background 0.5s; }
+
+        @media (max-width: 600px) { 
+            .settings { grid-template-columns: 1fr; }
+            #scoreboard { font-size: 14px; white-space: normal; }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <h1>⚽ Spelling Cup Final</h1>
+    <select id="voice-select" onchange="testVoice()"><option>Loading voices...</option></select>
+    <div class="settings">
+        <select id="list-select" onchange="changeSettings()">
+            <option value="Short">Short List (School)</option>
+            <option value="Long">Long List (Full)</option>
+            <option value="Daily">Daily Challenge 📅</option>
+        </select>
+        <select id="difficulty-select" onchange="changeSettings()">
+            <option value="Easy">Easy (One Bee)</option>
+            <option value="Medium">Medium (Two Bee)</option>
+            <option value="Hard">Hard (Three Bee)</option>
+            <option value="Random">Random</option>
+        </select>
+        <select id="timer-select" onchange="changeSettings()">
+            <option value="30">30s Timer</option>
+            <option value="45">45s Timer</option>
+            <option value="60" selected>60s Timer</option>
+            <option value="90">90s Timer</option>
+            <option value="120">120s Timer</option>
+        </select>
+    </div>
+    <div id="timer-bar"><div id="timer-fill"></div></div>
+    <div id="word-area" class="word-display">Loading Word Lists...</div>
+    <div id="difficulty-indicator" style="height: 30px; font-size: 24px; margin-top: 10px; color: #555;"></div>
+    <div id="transcript-display" class="transcript-view" contenteditable="true"></div>
+    
+    <div class="controls">
+        <button type="button" id="start-btn" onclick="nextWord()">1. Kick Off ⚽</button>
+        <button type="button" id="repeat-btn" onclick="repeatWord()">🔄 Repeat</button>
+        <button type="button" id="slow-btn" onclick="speakSlow()">🐢 Slow</button>
+        <button type="button" id="listen-btn" onclick="toggleListen()">2. Speak 🎤</button>
+        <button type="button" id="sent-btn" onclick="useInSentence()">3. Sentence</button>
+        <button type="button" id="def-btn" onclick="askDefinition()">4. Define</button>
+        <button type="button" id="origin-btn" onclick="provideOrigin()">🌍 Origin</button>
+        <button type="button" id="hint-btn" onclick="revealLetter()">💡 Hint</button>
+        <button type="button" id="skip-btn" onclick="skipWord()">⏭️ Give Up</button>
+        <button type="button" id="clear-btn" onclick="clearText()">🗑️ Clear</button>
+        <button type="button" id="submit-btn" onclick="submitWord()">✅ Shoot!</button>
+        <button type="button" id="restart-btn" onclick="restartGame()" style="display:none; background-color: #d32f2f; color: white; grid-column: span 2;">🔄 Restart Game</button>
+        <button type="button" id="end-game-btn" onclick="endGame()" style="background-color: #546e7a; color: white; grid-column: span 2;">🏁 End Game</button>
+        <button type="button" id="high-scores-btn" onclick="showHighScores()" style="background-color: #8e24aa; color: white; grid-column: span 2;">🏆 High Scores</button>
+        <button type="button" id="shop-btn" onclick="openShop()" style="background-color: #7b1fa2; color: white; grid-column: span 2;">🛒 Shop</button>
+    </div>
+    
+    <div id="feedback"></div>
+    <div id="scoreboard">HOME: 0 - AWAY: 0 | STREAK: 0 🔥</div>
+    <div id="streak-bar-container" style="width: 100%; height: 8px; background: #424242; margin-top: 5px; border-radius: 4px; overflow: hidden; display: none; box-shadow: inset 0 1px 3px rgba(0,0,0,0.5); max-width: 400px; margin-left: auto; margin-right: auto;">
+        <div id="streak-bar-fill" style="height: 100%; width: 0%; background: linear-gradient(90deg, #ffeb3b, #ff9800); transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);"></div>
+    </div>
+    <div id="status-bar">Waiting for database...</div>
+    <div style="margin-top: 15px; display: flex; justify-content: center;">
+        <select id="theme-select" onchange="changeTheme()" style="width: auto; min-width: 200px; background-color: #cfd8dc; color: #333;">
+            <option value="Soccer">Soccer Theme</option>
+            <option value="Default">Default Theme</option>
+            <option value="Space">Space Theme 🚀</option>
+            <option value="Jungle">Jungle Theme 🦁</option>
+            <option value="Retro">Retro Arcade 🕹️</option>
+            <option value="Basketball">Basketball 🏀</option>
+            <option value="AmericanFootball">American Football 🏈</option>
+            <option value="Hockey">Hockey 🏒</option>
+            <option value="Luxury">Luxury Goods 💎</option>
+            <option value="Pirate">Pirate Theme 🏴‍☠️</option>
+        </select>
+    </div>
+</div>
+
+<div id="summary-modal" class="modal">
+    <div class="modal-content">
+        <h2>Session Summary</h2>
+        <p>Correct Words: <span id="summary-correct">0</span></p>
+        <p>Shields: <span id="summary-shields">0</span></p>
+        <div id="incorrect-list-container">
+            <h3>Incorrect Words</h3>
+            <ul id="incorrect-list"></ul>
+        </div>
+        <div id="high-score-entry" style="display:none; margin-top: 15px; padding: 10px; background: #e8f5e9; border-radius: 8px; border: 1px solid #4caf50;">
+            <h3 style="color: #2e7d32; margin-top: 0;">🎉 New High Score! 🎉</h3>
+            <input type="text" id="player-name" placeholder="Enter your name" style="padding: 8px; width: 60%; border: 1px solid #ccc; border-radius: 4px;">
+            <button onclick="submitHighScore()" style="padding: 8px; width: 30%; background: #4caf50; color: white; border: none; border-radius: 4px; cursor: pointer;">Save</button>
+        </div>
+        <button id="retry-btn" onclick="retryIncorrectWords()" style="background-color: #ff9800; color: white; margin-top: 10px;">Retry Words? 🔄</button>
+        <button onclick="closeSummary()" style="background-color: #546e7a; color: white; margin-top: 10px;">Close</button>
+    </div>
+</div>
+
+<div id="high-scores-modal" class="modal">
+    <div class="modal-content">
+        <h2>🏆 High Scores</h2>
+        <table id="high-scores-table" style="width:100%; text-align:left; border-collapse: collapse;">
+            <thead>
+                <tr style="background-color: #f2f2f2; border-bottom: 2px solid #ddd;">
+                    <th style="padding: 8px;">Rank</th>
+                    <th style="padding: 8px;">Name</th>
+                    <th style="padding: 8px;">Shields</th>
+                    <th style="padding: 8px;">Date</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <button onclick="closeHighScores()" style="background-color: #546e7a; color: white; margin-top: 15px;">Close</button>
+        <button onclick="clearHighScores()" style="background-color: #c62828; color: white; margin-top: 15px; margin-left: 10px;">Clear Scores</button>
+    </div>
+</div>
+
+<div id="shop-modal" class="modal">
+    <div class="modal-content">
+        <h2>🛒 Shop</h2>
+        <p>Shields: <span id="shop-shield-count">0</span></p>
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px;">
+            <button onclick="buyHint()" style="background-color: #ff9800; color: white; padding: 10px; border-radius: 5px; border: none; cursor: pointer; font-weight: bold;">💡 Buy Hint (3 🛡️)</button>
+            <button onclick="buySafeSkip()" style="background-color: #2196f3; color: white; padding: 10px; border-radius: 5px; border: none; cursor: pointer; font-weight: bold;">⏭️ Safe Skip (10 🛡️)</button>
+            <button onclick="buyDoubleShields()" style="background-color: #9c27b0; color: white; padding: 10px; border-radius: 5px; border: none; cursor: pointer; font-weight: bold;">✨ Double Shields (5 🛡️)</button>
+        </div>
+        <div id="shop-message" style="min-height: 24px; margin-bottom: 10px; font-weight: bold;"></div>
+        <button onclick="closeShop()" style="background-color: #546e7a; color: white;">Close</button>
+    </div>
+</div>
+
+<div id="login-modal" class="modal" style="display:block; background-color: rgba(0,0,0,0.9);">
+    <div class="modal-content">
+        <h2>👋 Welcome!</h2>
+        <p>Enter your name to access your Shield Bank:</p>
+        <input type="text" id="start-player-name" placeholder="Player Name" style="padding: 12px; font-size: 18px; width: 80%; margin-bottom: 20px; border-radius: 8px; border: 1px solid #ccc;">
+        <br>
+        <button onclick="startGameUser()" style="background-color: #4caf50; color: white; padding: 12px 30px; font-size: 18px; border-radius: 8px; border: none; cursor: pointer;">Start Game</button>
+    </div>
+</div>
+
+<script>
+    const schoolLists = {
+        "school_one_bee": [],
+        "school_two_bee": [],
+        "school_three_bee": []
+    };
+    
+    let wordDatabase = { "one bee": [], "two bee": [], "three bee": [] };
+    let definitions = {};
+    let origins = {};
+    let sentences = {};
+    let alternateSpellings = {};
+    let wordDifficulty = {};
+    let allSchoolWords = new Set();
+    let activePool = [];
+    let currentWord = "";
+    let currentPlayer = "";
+    let playerScore = 0;
+    let shieldScore = 0;
+    let totalShields = 0;
+    let shieldsSinceLastMilestone = 0;
+    let currentDifficulty = 1;
+    let opponentScore = 0;
+    let explorerScore = 0;
+    let timerInterval = null;
+    let timeLeft = 60;
+    let currentTotalTime = 60;
+    let revealedIndex = 0;
+    let streak = 0;
+    let isListening = false;
+    let isRoundActive = false;
+    let recognition = null;
+    let synth = window.speechSynthesis;
+    let availableVoices = [];
+    let askedOrigin = false;
+    let correctCount = 0;
+    let incorrectWords = new Set();
+    let isRetryMode = false;
+    let retryMistakes = 0;
+    let doubleShieldsActive = false;
+    let retryShieldScore = 0;
+    let highScores = JSON.parse(localStorage.getItem('spellingBeeHighScores')) || [];
+
+    const themeData = {
+        "Soccer": {
+            title: "⚽ Spelling Cup Final",
+            startBtn: "1. Kick Off ⚽",
+            submitBtn: "✅ Shoot!",
+            passBtn: "5. Pass (-5)",
+            startInstruction: "Click 'Kick Off' to Start",
+            scoreboard: (p, o, s) => `HOME: ${p} - AWAY: ${o} | STREAK: ${s} 🔥`,
+            correct: "⚽ GOAL! Correct!",
+            incorrect: "❌ Miss! Correct: ",
+            pass: "🥅 Passed to Goalie! -5 Points",
+            skip: "⏭️ Skipped! The word was ",
+            hint: "💡 Hint used! -1 Point",
+            gameOver: "You have been relegated!",
+            gameOverAudio: "Game Over. You have been relegated.",
+            styles: { backgroundColor: "#e8f5e9", containerBorderColor: "#2e7d32", fontFamily: "'Segoe UI', Tahoma, sans-serif", titleColor: "#1b5e20" }
+        },
+        "Default": {
+            title: "🐝 Spelling Game",
+            startBtn: "1. Next Word ➡️",
+            submitBtn: "✅ Submit",
+            passBtn: "5. Pass (-5)",
+            startInstruction: "Click 'Next Word' to Start",
+            scoreboard: (p, o, s) => `PLAYER: ${p} - COMPUTER: ${o} | STREAK: ${s} 🔥`,
+            correct: "🎉 Correct!",
+            incorrect: "❌ Incorrect! Correct: ",
+            pass: "⏩ Passed! -5 Points",
+            skip: "⏭️ Skipped! The word was ",
+            hint: "💡 Hint used! -1 Point",
+            gameOver: "Game Over!",
+            gameOverAudio: "Game Over.",
+            styles: { backgroundColor: "#f5f5f5", containerBorderColor: "#607d8b", fontFamily: "Arial, Helvetica, sans-serif", titleColor: "#455a64" }
+        },
+        "Space": {
+            title: "🚀 Galactic Spelling Mission",
+            startBtn: "1. Launch 🚀",
+            submitBtn: "✅ Engage!",
+            passBtn: "5. Abort (-5)",
+            startInstruction: "Click 'Launch' to Start",
+            scoreboard: (p, o, s) => `COMMANDER: ${p} - ALIEN: ${o} | STREAK: ${s} 🌠`,
+            correct: "🌌 Stellar! Correct!",
+            incorrect: "💥 Hull Breach! Correct: ",
+            pass: "🛸 Evasive Maneuvers! -5 Points",
+            skip: "⏭️ Warp Jump! The word was ",
+            hint: "💡 Scan used! -1 Point",
+            gameOver: "Mission Failed!",
+            gameOverAudio: "Mission Failed.",
+            styles: { backgroundColor: "#0d1b2a", containerBorderColor: "#4fc3f7", fontFamily: "'Courier New', Courier, monospace", titleColor: "#e1f5fe" }
+        },
+        "Jungle": {
+            title: "🦁 Jungle Spelling Safari",
+            startBtn: "1. Explore 🌿",
+            submitBtn: "✅ Roar!",
+            passBtn: "5. Flee (-5)",
+            startInstruction: "Click 'Explore' to Start",
+            scoreboard: (p, o, s) => `EXPLORER: ${p} - WILD: ${o} | STREAK: ${s} 🌴`,
+            correct: "🍌 Wild! Correct!",
+            incorrect: "🐍 Snakebite! Correct: ",
+            pass: "🏃 Run Away! -5 Points",
+            skip: "⏭️ Bushwhack! The word was ",
+            hint: "💡 Guide used! -1 Point",
+            gameOver: "Lost in the Jungle!",
+            gameOverAudio: "You are lost in the jungle.",
+            styles: { backgroundColor: "#f1f8e9", containerBorderColor: "#558b2f", fontFamily: "'Trebuchet MS', sans-serif", titleColor: "#33691e" }
+        },
+        "Retro": {
+            title: "🕹️ 8-Bit Spelling Arcade",
+            startBtn: "1. Insert Coin 🪙",
+            submitBtn: "✅ Press Start",
+            passBtn: "5. Pass (-5)",
+            startInstruction: "Click 'Insert Coin' to Start",
+            scoreboard: (p, o, s) => `P1: ${p} - CPU: ${o} | STREAK: ${s} 👾`,
+            correct: "🌟 High Score! Correct!",
+            incorrect: "💀 Game Over! Correct: ",
+            pass: "⏩ Warp Zone! -5 Points",
+            skip: "⏭️ Reset! The word was ",
+            hint: "💡 Cheat Code! -1 Point",
+            gameOver: "Out of Lives!",
+            gameOverAudio: "Game Over.",
+            styles: { backgroundColor: "#212121", containerBorderColor: "#ffeb3b", fontFamily: "'Courier New', monospace", titleColor: "#76ff03" }
+        },
+        "Basketball": {
+            title: "🏀 Spelling Slam Dunk",
+            startBtn: "1. Tip Off 🏀",
+            submitBtn: "✅ Shoot!",
+            passBtn: "5. Pass (-5)",
+            startInstruction: "Click 'Tip Off' to Start",
+            scoreboard: (p, o, s) => `HOME: ${p} - VISITOR: ${o} | STREAK: ${s} ⛹️`,
+            correct: "🏀 Nothing but net! Correct!",
+            incorrect: "🧱 Brick! Correct: ",
+            pass: "🏀 Pass! -5 Points",
+            skip: "⏭️ Turnover! The word was ",
+            hint: "💡 Assist! -1 Point",
+            gameOver: "Buzzer Beater! You lost!",
+            gameOverAudio: "Game Over.",
+            styles: { backgroundColor: "#fff3e0", containerBorderColor: "#ff9800", fontFamily: "Impact, sans-serif", titleColor: "#e65100" }
+        },
+        "AmericanFootball": {
+            title: "🏈 Spelling Touchdown",
+            startBtn: "1. Kickoff 🏈",
+            submitBtn: "✅ Hike!",
+            passBtn: "5. Punt (-5)",
+            startInstruction: "Click 'Kickoff' to Start",
+            scoreboard: (p, o, s) => `HOME: ${p} - AWAY: ${o} | STREAK: ${s} 🏈`,
+            correct: "🏈 Touchdown! Correct!",
+            incorrect: "❌ Fumble! Correct: ",
+            pass: "🏈 Punt! -5 Points",
+            skip: "⏭️ Sack! The word was ",
+            hint: "💡 Timeout! -1 Point",
+            gameOver: "Game Over!",
+            gameOverAudio: "Game Over.",
+            styles: { backgroundColor: "#d7ccc8", containerBorderColor: "#5d4037", fontFamily: "Rockwell, serif", titleColor: "#3e2723" }
+        },
+        "Hockey": {
+            title: "🏒 Spelling Slap Shot",
+            startBtn: "1. Face Off 🏒",
+            submitBtn: "✅ Slap Shot!",
+            passBtn: "5. Pass (-5)",
+            startInstruction: "Click 'Face Off' to Start",
+            scoreboard: (p, o, s) => `HOME: ${p} - AWAY: ${o} | STREAK: ${s} ⛸️`,
+            correct: "🚨 Goal! Correct!",
+            incorrect: "🥅 Save! Correct: ",
+            pass: "🏒 Icing! -5 Points",
+            skip: "⏭️ Offside! The word was ",
+            hint: "💡 Power Play! -1 Point",
+            gameOver: "Game Over!",
+            gameOverAudio: "Game Over.",
+            styles: { backgroundColor: "#e3f2fd", containerBorderColor: "#0288d1", fontFamily: "Verdana, sans-serif", titleColor: "#01579b" }
+        },
+        "Luxury": {
+            title: "💎 Spelling Boutique",
+            startBtn: "1. Shop 🛍️",
+            submitBtn: "✅ Purchase",
+            passBtn: "5. Pass (-5)",
+            startInstruction: "Click 'Shop' to Start",
+            scoreboard: (p, o, s) => `VIP: ${p} - RIVAL: ${o} | STREAK: ${s} 💍`,
+            correct: "💎 Exquisite! Correct!",
+            incorrect: "❌ Counterfeit! Correct: ",
+            pass: "💳 Credit Declined! -5 Points",
+            skip: "⏭️ Out of Stock! The word was ",
+            hint: "💡 Personal Shopper! -1 Point",
+            gameOver: "Bankrupt!",
+            gameOverAudio: "You are bankrupt.",
+            styles: { backgroundColor: "#f3e5f5", containerBorderColor: "#8e24aa", fontFamily: "'Palatino Linotype', serif", titleColor: "#4a148c" }
+        },
+        "Pirate": {
+            title: "🏴‍☠️ Pirate Spelling Plunder",
+            startBtn: "1. Set Sail 🏴‍☠️",
+            submitBtn: "✅ Fire!",
+            passBtn: "5. Parley (-5)",
+            startInstruction: "Click 'Set Sail' to Start",
+            scoreboard: (p, o, s) => `CAPTAIN: ${p} - SCALLYWAG: ${o} | STREAK: ${s} 🦜`,
+            correct: "💎 Treasure! Correct!",
+            incorrect: "☠️ Walk the Plank! Correct: ",
+            pass: "🏳️ Parley! -5 Doubloons",
+            skip: "⏭️ Abandon Ship! The word was ",
+            hint: "💡 Spyglass used! -1 Doubloon",
+            gameOver: "Feed the fishes!",
+            gameOverAudio: "Game Over. You feed the fishes.",
+            styles: { backgroundColor: "#e0f7fa", containerBorderColor: "#006064", fontFamily: "'Brush Script MT', cursive", titleColor: "#006064" }
+        }
+    };
+    let currentThemeConfig = themeData["Soccer"];
+
+    const el = {
+        word: document.getElementById('word-area'),
+        transcript: document.getElementById('transcript-display'),
+        feedback: document.getElementById('feedback'),
+        status: document.getElementById('status-bar'),
+        listenBtn: document.getElementById('listen-btn'),
+        listSelect: document.getElementById('list-select'),
+        difficultySelect: document.getElementById('difficulty-select'),
+        timerSelect: document.getElementById('timer-select'),
+        voiceSelect: document.getElementById('voice-select'),
+        scoreBoard: document.getElementById('scoreboard')
+    };
+
+    async function init() {
+        loadGameState();
+
+        const savedTheme = localStorage.getItem('spellingBeeTheme');
+        if (savedTheme && themeData[savedTheme]) {
+            document.getElementById('theme-select').value = savedTheme;
+            changeTheme();
+        }
+        
+        loadVoices();
+        el.status.innerText = "Loading dictionaries...";
+        try {
+            const [res1, res2, res3, resS1, resS2, resS3, resAlt] = await Promise.all([
+                fetch('one_bee_words.json'),
+                fetch('two_bee_words.json'),
+                fetch('three_bee_words.json'),
+                fetch('school_one_bee_words.json'),
+                fetch('school_two_bee_words.json'),
+                fetch('school_three_bee_words.json'),
+                fetch('alternate_spellings.json')
+            ]);
+
+            if (!res1.ok || !res2.ok || !res3.ok || !resS1.ok || !resS2.ok || !resS3.ok || !resAlt.ok) throw new Error("Failed to load word files");
+
+            const data1 = await res1.json();
+            const data2 = await res2.json();
+            const data3 = await res3.json();
+            const dataS1 = await resS1.json();
+            const dataS2 = await resS2.json();
+            const dataS3 = await resS3.json();
+            const alts = await resAlt.json();
+
+            const processWords = (list, targetArray, level) => {
+                if (!list) return;
+                list.forEach(item => {
+                    let w = "";
+                    if (typeof item === 'string') w = item;
+                    else if (item.word) w = item.word;
+                    
+                    if (w) {
+                        targetArray.push(w);
+                        if (!wordDifficulty[w.toLowerCase()]) wordDifficulty[w.toLowerCase()] = level;
+                        if (item.definition) definitions[w.toLowerCase()] = item.definition;
+                        if (item.origin) origins[w.toLowerCase()] = item.origin;
+                        if (item.sentence) sentences[w.toLowerCase()] = item.sentence;
+                    }
+                });
+            };
+
+            processWords(data1.words, wordDatabase["one bee"], 1);
+            processWords(data2.words, wordDatabase["two bee"], 2);
+            processWords(data3.words, wordDatabase["three bee"], 3);
+            
+            processWords(dataS1.words, schoolLists["school_one_bee"], 1);
+            processWords(dataS2.words, schoolLists["school_two_bee"], 2);
+            processWords(dataS3.words, schoolLists["school_three_bee"], 3);
+            alternateSpellings = alts || {};
+            
+            // Populate school words set for explorer award check
+            Object.values(schoolLists).flat().forEach(w => allSchoolWords.add(w.toLowerCase()));
+
+            const total = wordDatabase["one bee"].length + wordDatabase["two bee"].length + wordDatabase["three bee"].length;
+            el.status.innerText = `Ready! Loaded ${total} words.`;
+        } catch (e) {
+            console.error(e);
+            el.status.innerText = "Error loading word files. Check console.";
+        }
+        generatePool();
+        
+        // Pre-fill last player name
+        const lastPlayer = localStorage.getItem('spellingBeePlayerName');
+        if (lastPlayer) {
+            document.getElementById('start-player-name').value = lastPlayer;
+        }
+        el.word.innerText = currentThemeConfig.startInstruction;
+    }
+
+    function saveGameState() {
+        const state = {
+            playerScore,
+            opponentScore,
+            streak,
+            shieldScore,
+            totalShields,
+            shieldsSinceLastMilestone,
+            explorerScore,
+            doubleShieldsActive
+        };
+        localStorage.setItem('spellingBeeState', JSON.stringify(state));
+        
+        if (currentPlayer) {
+            const bank = JSON.parse(localStorage.getItem('spellingBeeBank') || '{}');
+            bank[currentPlayer] = totalShields;
+            localStorage.setItem('spellingBeeBank', JSON.stringify(bank));
+        }
+    }
+
+    function loadGameState() {
+        const saved = localStorage.getItem('spellingBeeState');
+        if (saved) {
+            try {
+                const state = JSON.parse(saved);
+                playerScore = state.playerScore || 0;
+                opponentScore = state.opponentScore || 0;
+                streak = state.streak || 0;
+                shieldScore = state.shieldScore || 0;
+                totalShields = state.totalShields !== undefined ? state.totalShields : shieldScore;
+                shieldsSinceLastMilestone = state.shieldsSinceLastMilestone || 0;
+                explorerScore = state.explorerScore || 0;
+                doubleShieldsActive = state.doubleShieldsActive || false;
+                updateDifficultyDisplay();
+                updateScoreboard();
+            } catch (e) {
+                console.error("Failed to load game state", e);
+            }
+        }
+    }
+
+    function startGameUser() {
+        const nameInput = document.getElementById('start-player-name');
+        const name = nameInput.value.trim() || "Anonymous";
+        currentPlayer = name;
+        localStorage.setItem('spellingBeePlayerName', name);
+
+        // Load user's bank
+        const bank = JSON.parse(localStorage.getItem('spellingBeeBank') || '{}');
+        totalShields = bank[name] !== undefined ? bank[name] : 0;
+        
+        updateScoreboard();
+        document.getElementById('login-modal').style.display = 'none';
+    }
+
+    function changeTheme() {
+        const theme = document.getElementById('theme-select').value;
+        localStorage.setItem('spellingBeeTheme', theme);
+        currentThemeConfig = themeData[theme];
+        
+        document.querySelector('h1').innerText = currentThemeConfig.title;
+        document.getElementById('start-btn').innerText = currentThemeConfig.startBtn;
+        document.getElementById('submit-btn').innerText = currentThemeConfig.submitBtn;
+        
+        if (currentThemeConfig.styles) {
+            document.body.style.backgroundColor = currentThemeConfig.styles.backgroundColor;
+            document.body.style.fontFamily = currentThemeConfig.styles.fontFamily;
+            document.querySelector('.container').style.borderColor = currentThemeConfig.styles.containerBorderColor;
+            document.querySelector('h1').style.color = currentThemeConfig.styles.titleColor;
+        }
+
+        if (!currentWord) el.word.innerText = currentThemeConfig.startInstruction;
+        updateScoreboard();
+    }
+
+    function updateScoreboard() {
+        el.scoreBoard.innerHTML = currentThemeConfig.scoreboard(shieldScore, opponentScore, streak) + ` | 🧭 ${explorerScore} | <span id="bank-target" style="display:inline-block">🏦</span> ${totalShields}`;
+        
+        el.scoreBoard.classList.remove('streak-5', 'streak-10', 'streak-20');
+        if (streak >= 20) el.scoreBoard.classList.add('streak-20');
+        else if (streak >= 10) el.scoreBoard.classList.add('streak-10');
+        else if (streak >= 5) el.scoreBoard.classList.add('streak-5');
+        
+        updateStreakBar();
+        saveGameState();
+    }
+
+    function changeSettings() {
+        generatePool();
+        if (el.listSelect.value === "Daily") {
+             el.word.innerText = `Daily Challenge: 20 words for ${new Date().toLocaleDateString()}. ` + currentThemeConfig.startInstruction;
+        } else {
+             el.word.innerText = "Settings Updated. " + currentThemeConfig.startInstruction;
+        }
+        currentWord = "";
+    }
+
+    // Simple Seeded RNG (Linear Congruential Generator)
+    function seededRandom(seed) {
+        const m = 0x80000000;
+        const a = 1103515245;
+        const c = 12345;
+        let state = seed ? seed : Math.floor(Math.random() * (m - 1));
+        return function() {
+            state = (a * state + c) % m;
+            return state / (m - 1);
+        }
+    }
+
+    function getDailySeed() {
+        const now = new Date();
+        return now.getFullYear() * 10000 + (now.getMonth() + 1) * 100 + now.getDate();
+    }
+
+    function generatePool() {
+        activePool = [];
+        const listType = el.listSelect.value;
+        const difficulty = el.difficultySelect.value;
+        
+        // Enable difficulty select by default, disable for Daily
+        el.difficultySelect.disabled = (listType === "Daily");
+
+        if (listType === "Daily") {
+            const allWords = [
+                ...wordDatabase["one bee"],
+                ...wordDatabase["two bee"],
+                ...wordDatabase["three bee"]
+            ];
+            
+            if (allWords.length === 0) return; // Not loaded yet
+
+            const seed = getDailySeed();
+            const rng = seededRandom(seed);
+            
+            // Fisher-Yates shuffle with seeded RNG
+            let pool = [...allWords];
+            for (let i = pool.length - 1; i > 0; i--) {
+                const j = Math.floor(rng() * (i + 1));
+                [pool[i], pool[j]] = [pool[j], pool[i]];
+            }
+            
+            activePool = pool.slice(0, 20);
+        } else if (listType === "Short") {
+            if (difficulty === "Random") {
+                activePool = [
+                    ...schoolLists.school_one_bee,
+                    ...schoolLists.school_two_bee,
+                    ...schoolLists.school_three_bee
+                ];
+            } else {
+                const key = difficulty === "Easy" ? "school_one_bee" : 
+                            difficulty === "Medium" ? "school_two_bee" : "school_three_bee";
+                activePool = [...schoolLists[key]];
+            }
+            activePool.sort(() => Math.random() - 0.5);
+        } else {
+            if (difficulty === "Random") {
+                activePool = [...wordDatabase["one bee"], ...wordDatabase["two bee"], ...wordDatabase["three bee"]];
+            } else {
+                const key = difficulty === "Easy" ? "one bee" : 
+                            difficulty === "Medium" ? "two bee" : "three bee";
+                activePool = [...wordDatabase[key]];
+            }
+            activePool.sort(() => Math.random() - 0.5);
+        }
+    }
+
+    function checkGameOver() {
+        if (playerScore < -20 || shieldScore < 0) {
+            stopTimer();
+            currentWord = "";
+            el.word.innerText = "GAME OVER";
+            el.word.style.color = "red";
+            el.status.innerText = "Game Over";
+            el.feedback.innerText = currentThemeConfig.gameOver;
+            el.feedback.style.color = "red";
+            speak(currentThemeConfig.gameOverAudio, false);
+            
+            const buttons = document.querySelectorAll('.controls button');
+            buttons.forEach(btn => {
+                if (btn.id !== 'restart-btn') btn.disabled = true;
+            });
+            
+            const restartBtn = document.getElementById('restart-btn');
+            if (restartBtn) restartBtn.style.display = 'block';
+            return true;
+        }
+        return false;
+    }
+
+    function restartGame() {
+        playerScore = 0;
+        opponentScore = 0;
+        streak = 0;
+        explorerScore = 0;
+        shieldScore = 0;
+        sessionCups = 0;
+        correctCount = 0;
+        incorrectWords.clear();
+        isRetryMode = false;
+        retryMistakes = 0;
+        retryShieldScore = 0;
+        doubleShieldsActive = false;
+        currentWord = "";
+        stopTimer();
+        revealedIndex = 0;
+        
+        updateScoreboard();
+        el.word.innerText = currentThemeConfig.startInstruction;
+        el.word.style.color = "#1b5e20"; 
+        el.status.innerText = "Game Restarted.";
+        el.feedback.innerText = "";
+        el.transcript.innerText = "";
+        
+        currentTotalTime = getTimerDuration();
+        updateTimerDisplay(currentTotalTime);
+        const buttons = document.querySelectorAll('.controls button');
+        buttons.forEach(btn => btn.disabled = false);
+        shieldsSinceLastMilestone = 0;
+        
+        const restartBtn = document.getElementById('restart-btn');
+        if (restartBtn) restartBtn.style.display = 'none';
+        
+        generatePool();
+    }
+
+    function nextWord() {
+        stopMicrophone(); // Ensure mic is dead before starting new turn
+        if (isRetryMode && activePool.length === 0) {
+            endGame();
+            return;
+        }
+        if (activePool.length === 0) generatePool();
+        currentWord = activePool.shift() || "spelling";
+        currentDifficulty = wordDifficulty[currentWord.toLowerCase()] || 1;
+        updateDifficultyDisplay();
+        askedOrigin = false;
+        revealedIndex = 0;
+        el.transcript.innerText = "";
+        el.feedback.innerText = "";
+        el.word.innerText = "Press 'Speak' button to answer";
+        speak("The word is " + currentWord, false);
+        startTimer();
+    }
+
+    function updateDifficultyDisplay() {
+        const shields = "🛡️".repeat(currentDifficulty);
+        document.getElementById('difficulty-indicator').innerText = shields;
+        if (doubleShieldsActive) {
+            document.getElementById('difficulty-indicator').innerText += " (2x Active ✨)";
+        }
+        const colors = {1: "#81c784", 2: "#ffb74d", 3: "#e57373"};
+        el.transcript.style.borderColor = colors[currentDifficulty] || "#bbdefb";
+        el.transcript.style.backgroundColor = (colors[currentDifficulty] || "#fff") + "22";
+    }
+
+    function repeatWord() {
+        if (!currentWord) { speak("Click Kick Off first.", false); return; }
+        
+        stopMicrophone();
+        el.status.innerText = "Repeating...";
+        speak(currentWord, false);
+    }
+
+    function speakSlow() {
+        if (!currentWord) return;
+        stopMicrophone();
+        el.status.innerText = "Speaking slowly...";
+        speak(currentWord, false, 0.3);
+    }
+
+    function revealLetter(costType = 'health') {
+        if (!currentWord) return;
+        if (revealedIndex < currentWord.length) {
+            revealedIndex++;
+            let display = currentWord.substring(0, revealedIndex) + "_".repeat(currentWord.length - revealedIndex);
+            el.word.innerText = display.split('').join(' ');
+            
+            if (costType === 'health') {
+                playerScore--;
+                el.feedback.innerText = currentThemeConfig.hint;
+                el.feedback.style.color = "#ef6c00";
+            }
+            
+            updateScoreboard();
+            if (checkGameOver()) return;
+        }
+    }
+
+    function stopMicrophone() {
+        if (isListening && recognition) {
+            try { recognition.abort(); } catch(e) {} 
+            isListening = false;
+            el.listenBtn.innerText = "2. Speak 🎤";
+            el.listenBtn.style.background = "#2e7d32";
+        }
+    }
+
+    async function passToGoalie() {
+        if (!currentWord) return;
+        stopTimer();
+        stopMicrophone();
+        shieldScore -= currentDifficulty;
+        totalShields -= currentDifficulty;
+        updateScoreboard();
+        if (checkGameOver()) return;
+        el.feedback.innerText = currentThemeConfig.pass.replace("-5", "-" + currentDifficulty);
+        el.feedback.style.color = "#ef6c00";
+
+        el.status.innerText = "Goalie retrieving...";
+        const spelling = currentWord.split('').map(c => c===' '?'space':c==='-'?'hyphen':c).join(', ');
+        let def = definitions[currentWord.toLowerCase()];
+        if (!def) {
+            try {
+                const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(currentWord)}`);
+                const data = await res.json();
+                def = data[0].meanings[0].definitions[0].definition;
+            } catch(e) { def = "Definition unavailable."; }
+        }
+        speak(`Spelling: ${spelling}. Definition: ${stripHtml(def)}`, false);
+    }
+
+    function skipWord() {
+        if (!currentWord) return;
+        stopTimer();
+        stopMicrophone();
+        opponentScore++;
+        incorrectWords.add(currentWord);
+        streak = 0;
+        shieldsSinceLastMilestone = 0;
+        updateScoreboard();
+        el.feedback.innerText = currentThemeConfig.skip + currentWord;
+        el.feedback.style.color = "#546e7a";
+        speak("Skipped. The word was " + currentWord, false);
+        el.word.innerText = currentWord.split('').join(' ');
+    }
+
+    function stripHtml(html) {
+        if (!html) return "";
+        let tmp = document.createElement("DIV");
+        tmp.innerHTML = html;
+        return tmp.textContent || tmp.innerText || "";
+    }
+
+    function redactWord(text, word) {
+        if (!text || !word) return text;
+        // Escape regex characters
+        const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp(`\\b${escaped}\\b`, 'gi');
+        return text.replace(regex, '???');
+    }
+
+    async function askDefinition() {
+        if (!currentWord) return;
+        stopMicrophone();
+        el.status.innerText = "Fetching definition...";
+        let def = definitions[currentWord.toLowerCase()];
+        if (def) {
+            el.status.innerHTML = "Definition: " + redactWord(def, currentWord);
+            speak("Definition: " + stripHtml(def), false);
+        } else {
+            try {
+                const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(currentWord)}`);
+                const data = await res.json();
+                const d = data[0].meanings[0].definitions[0].definition;
+                const pos = data[0].meanings[0].partOfSpeech;
+                const text = `${pos}. ${d}`;
+                el.status.innerHTML = redactWord(text, currentWord); // Use innerHTML to be safe if redactWord adds tags or if text has them
+                speak(text, false);
+            } catch (e) {
+                el.status.innerText = "No definition found.";
+                speak("No definition found.", false);
+            }
+        }
+    }
+
+    async function provideOrigin() {
+        if (!currentWord) return;
+        stopMicrophone();
+        askedOrigin = true; 
+        
+        if (origins[currentWord.toLowerCase()]) {
+            const origin = origins[currentWord.toLowerCase()];
+            el.status.innerHTML = "Origin: " + redactWord(origin, currentWord);
+            speak("Origin: " + stripHtml(origin), false);
+            return;
+        }
+
+        el.status.innerText = "Checking VAR (Origin)...";
+        const origin = await fetchOriginWithFallback(currentWord);
+
+        if (origin) {
+            speak(origin, false);
+            el.status.innerHTML = "Origin: " + redactWord(origin, currentWord);
+        } else {
+            speak("The referee says origin is unavailable.", false);
+            el.status.innerText = "Origin unavailable.";
+        }
+    }
+
+    async function fetchOriginWithFallback(word) {
+        try {
+            console.log("Fetching origin for:", word);
+            console.log("Using free dictionary API for origin...");
+            let res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`);
+            if (!res.ok) {
+                const normalized = word.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                if (normalized !== word) {
+                    res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(normalized)}`);
+                }
+            }
+            if (res.ok) {
+                const data = await res.json();
+                if (data[0] && data[0].origin) return data[0].origin;
+            }
+        } catch (e) {
+            console.warn("Primary origin API failed, trying fallback...");
+        }
+
+        // Fallback API placeholder (e.g. Wordnik, Merriam-Webster)
+        return null;
+    }
+
+    async function useInSentence() {
+        if (!currentWord) return;
+        stopMicrophone();
+        
+        if (sentences[currentWord.toLowerCase()]) {
+            const sent = sentences[currentWord.toLowerCase()];
+            el.status.innerText = "Sentence: " + redactWord(sent, currentWord);
+            speak(sent, false);
+            return;
+        }
+
+        try {
+            const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(currentWord)}`);
+            const data = await res.json();
+            let example = "";
+            if (data[0].meanings) {
+                for (let m of data[0].meanings) {
+                    for (let d of m.definitions) {
+                        if (d.example) { example = d.example; break; }
+                    }
+                    if (example) break;
+                }
+            }
+            if (example) {
+                speak(example, false);
+                el.status.innerText = "Sentence: " + redactWord(example, currentWord);
+            }
+            else speak("The referee has no sentence for that one.", false);
+        } catch (e) { speak("Sentence unavailable.", false); }
+    }
+
+    function submitWord() {
+        if (!currentWord) return;
+        
+        stopTimer();
+        stopMicrophone();
+        
+        const raw = el.transcript.innerText.toLowerCase().replace(/\s+/g, '');
+        const targetLower = currentWord.toLowerCase();
+        
+        // Normalize for comparison: remove accents, quotes, hyphens
+        const cleanUser = raw.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/['’]/g, "").replace(/-/g, "");
+        const cleanTarget = targetLower.replace(/\s+/g, '').normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/['’]/g, "").replace(/-/g, "");
+
+        let feedbackText = "";
+        let audioPhrase = "";
+        let isCorrect = (cleanUser === cleanTarget);
+
+        // Check alternates
+        if (!isCorrect && alternateSpellings[targetLower]) {
+            const alts = alternateSpellings[targetLower];
+            for (const alt of alts) {
+                const cleanAlt = alt.toLowerCase().replace(/\s+/g, '').normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/['’]/g, "").replace(/-/g, "");
+                if (cleanUser === cleanAlt) {
+                    isCorrect = true;
+                    break;
+                }
+            }
+        }
+
+        if (isCorrect) {
+            playerScore++;
+            streak++;
+            if (!isRetryMode) correctCount++;
+            
+            let earned = currentDifficulty;
+            if (doubleShieldsActive) {
+                earned *= 2;
+                doubleShieldsActive = false;
+                audioPhrase = "Double shields! " + audioPhrase;
+            }
+
+            shieldsSinceLastMilestone += earned;
+
+            if (isRetryMode) {
+                retryShieldScore += earned;
+            } else {
+                shieldScore += earned;
+                totalShields += earned;
+            }
+            feedbackText = currentThemeConfig.correct;
+            el.feedback.style.color = "green";
+            audioPhrase = "That is correct! " + currentWord;
+
+            if (!allSchoolWords.has(currentWord.toLowerCase())) {
+                explorerScore++;
+                feedbackText += " 🧭 Explorer Award!";
+            }
+
+            let bonus = 0;
+            let milestoneHit = false;
+
+            if (streak === 5) {
+                milestoneHit = true;
+                audioPhrase += ". Five in a row!";
+                playTone(600, 'sine', 0.5);
+            } else if (streak === 10) {
+                milestoneHit = true;
+                audioPhrase += ". Ten in a row!";
+                playTone(800, 'triangle', 0.5);
+            } else if (streak === 20) {
+                milestoneHit = true;
+                audioPhrase += ". Twenty in a row!";
+                playTone(1000, 'square', 0.8);
+            } else if (streak > 20 && (streak - 20) % 10 === 0) {
+                milestoneHit = true;
+                audioPhrase += `. ${streak} in a row!`;
+                playTone(1000, 'square', 0.8);
+            }
+
+            if (milestoneHit) {
+                bonus = Math.floor(shieldsSinceLastMilestone * 0.5);
+                if (isRetryMode) {
+                    retryShieldScore += bonus;
+                } else {
+                    shieldScore += bonus;
+                    totalShields += bonus;
+                }
+                audioPhrase += ` ${bonus} Bonus Shields!`;
+                animateShieldsToBank(bonus);
+                shieldsSinceLastMilestone = 0;
+            }
+
+            if (isRetryMode && activePool.length === 0) {
+                if (retryMistakes === 0) {
+                    shieldScore += retryShieldScore;
+                    totalShields += retryShieldScore;
+                    audioPhrase += " Perfect retry! Shields added!";
+                    playTone(1200, 'square', 1.0);
+                }
+                setTimeout(endGame, 3000);
+            }
+        } else {
+            opponentScore++;
+            streak = 0;
+            shieldsSinceLastMilestone = 0;
+            feedbackText = currentThemeConfig.incorrect + currentWord;
+            el.feedback.style.color = "red";
+            doubleShieldsActive = false;
+            incorrectWords.add(currentWord);
+            if (isRetryMode) retryMistakes++;
+            audioPhrase = "Incorrect. The word was " + currentWord;
+        }
+        
+        el.feedback.innerText = feedbackText;
+        updateScoreboard();
+        updateDifficultyDisplay();
+        speak(audioPhrase, false);
+        currentWord = "";
+    }
+
+    function updateStreakBar() {
+        const barContainer = document.getElementById('streak-bar-container');
+        const barFill = document.getElementById('streak-bar-fill');
+        
+        if (!barContainer || !barFill) return;
+
+        if (streak === 0) {
+            barContainer.style.display = "none";
+            barFill.style.width = "0%";
+            return;
+        }
+        
+        barContainer.style.display = "block";
+
+        let previousMilestone = 0;
+        let nextMilestone = 5;
+
+        if (streak < 5) {
+            previousMilestone = 0;
+            nextMilestone = 5;
+        } else if (streak < 10) {
+            previousMilestone = 5;
+            nextMilestone = 10;
+        } else if (streak < 20) {
+            previousMilestone = 10;
+            nextMilestone = 20;
+        } else {
+            previousMilestone = 20 + Math.floor((streak - 20) / 10) * 10;
+            nextMilestone = previousMilestone + 10;
+        }
+
+        const progress = (streak - previousMilestone) / (nextMilestone - previousMilestone);
+        const percentage = Math.min(100, Math.max(0, progress * 100));
+        barFill.style.width = percentage + "%";
+    }
+
+    function animateShieldsToBank(count) {
+        const targetPlaceholder = document.getElementById('bank-target');
+        if (!targetPlaceholder) return;
+        const rect = targetPlaceholder.getBoundingClientRect();
+        const targetX = rect.left + rect.width / 2;
+        const targetY = rect.top + rect.height / 2;
+        
+        for (let i = 0; i < count; i++) {
+            setTimeout(() => {
+                const shield = document.createElement('div');
+                shield.innerText = '🛡️';
+                shield.className = 'flying-shield';
+                shield.style.fontSize = '40px';
+                shield.style.left = '50%';
+                shield.style.top = '50%';
+                shield.style.transform = 'translate(-50%, -50%)';
+                document.body.appendChild(shield);
+
+                const animation = shield.animate([
+                    { left: '50%', top: '50%', transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+                    { left: `${targetX}px`, top: `${targetY}px`, transform: 'translate(-50%, -50%) scale(0.2)', opacity: 0.5 }
+                ], {
+                    duration: 800,
+                    easing: 'cubic-bezier(0.25, 1, 0.5, 1)'
+                });
+
+                animation.onfinish = () => {
+                    shield.remove();
+                    const currentTarget = document.getElementById('bank-target');
+                    if (currentTarget) {
+                        currentTarget.animate([
+                            { transform: 'scale(1)' },
+                            { transform: 'scale(1.5)' },
+                            { transform: 'scale(1)' }
+                        ], { duration: 200 });
+                    }
+                };
+            }, i * 150);
+        }
+    }
+
+    function endGame() {
+        stopTimer();
+        stopMicrophone();
+        
+        document.getElementById('summary-correct').innerText = correctCount;
+        document.getElementById('summary-shields').innerText = shieldScore;
+        
+        const list = document.getElementById('incorrect-list');
+        list.innerHTML = "";
+        if (incorrectWords.size > 0) {
+            incorrectWords.forEach(word => {
+                const li = document.createElement('li');
+                li.innerText = word;
+                list.appendChild(li);
+            });
+            document.getElementById('retry-btn').style.display = "inline-block";
+        } else {
+            const li = document.createElement('li');
+            li.innerText = "None! Perfect game!";
+            li.style.color = "green";
+            li.style.background = "#e8f5e9";
+            list.appendChild(li);
+            document.getElementById('retry-btn').style.display = "none";
+        }
+        
+        checkHighScore(shieldScore);
+        document.getElementById('summary-modal').style.display = "block";
+    }
+
+    function closeSummary() {
+        document.getElementById('summary-modal').style.display = "none";
+        if (isRetryMode && activePool.length === 0) {
+            isRetryMode = false;
+            resetScores();
+        } else if (!isRetryMode) {
+            resetScores();
+        }
+    }
+
+    function resetScores() {
+        playerScore = 0;
+        opponentScore = 0;
+        streak = 0;
+        shieldScore = 0;
+        explorerScore = 0;
+        correctCount = 0;
+        incorrectWords.clear();
+        retryShieldScore = 0;
+        doubleShieldsActive = false;
+        shieldsSinceLastMilestone = 0;
+        updateScoreboard();
+    }
+
+    function retryIncorrectWords() {
+        if (incorrectWords.size === 0) return;
+        activePool = Array.from(incorrectWords);
+        incorrectWords.clear();
+        isRetryMode = true;
+        retryMistakes = 0;
+        retryShieldScore = 0;
+        closeSummary();
+        nextWord();
+    }
+
+    function showHighScores() {
+        const tbody = document.querySelector('#high-scores-table tbody');
+        tbody.innerHTML = "";
+        highScores.sort((a, b) => b.score - a.score);
+        highScores.slice(0, 10).forEach((score, index) => {
+            const row = tbody.insertRow();
+            row.innerHTML = `<td style="padding: 8px;">${index + 1}</td><td style="padding: 8px;">${score.name}</td><td style="padding: 8px;">${score.score}</td><td style="padding: 8px;">${score.date}</td>`;
+        });
+        document.getElementById('high-scores-modal').style.display = "block";
+    }
+
+    function closeHighScores() {
+        document.getElementById('high-scores-modal').style.display = "none";
+    }
+
+    function clearHighScores() {
+        if (confirm("Are you sure you want to clear all high scores?")) {
+            highScores = [];
+            localStorage.removeItem('spellingBeeHighScores');
+            showHighScores();
+        }
+    }
+
+    function checkHighScore(score) {
+        const entryDiv = document.getElementById('high-score-entry');
+        const title = entryDiv.querySelector('h3');
+        
+        highScores.sort((a, b) => b.score - a.score);
+        const currentTop = highScores.length > 0 ? highScores[0].score : 0;
+        const isNewRecord = score > currentTop;
+        const qualifies = score > 0 && (highScores.length < 10 || score > highScores[highScores.length - 1].score);
+        
+        if (qualifies) {
+            entryDiv.style.display = "block";
+            title.innerText = isNewRecord ? "🎉 New High Score! 🎉" : "🎉 Leaderboard Entry! 🎉";
+            const savedName = localStorage.getItem('spellingBeePlayerName');
+            if (savedName) {
+                document.getElementById('player-name').value = savedName;
+            }
+            if (window.confetti) {
+                confetti({
+                    particleCount: 150,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            }
+        } else {
+            entryDiv.style.display = "none";
+        }
+    }
+
+    function submitHighScore() {
+        const name = document.getElementById('player-name').value.trim() || "Anonymous";
+        localStorage.setItem('spellingBeePlayerName', name);
+        const score = shieldScore;
+        const date = new Date().toLocaleDateString();
+        highScores.push({ name, score, date });
+        highScores.sort((a, b) => b.score - a.score);
+        if (highScores.length > 10) highScores.pop();
+        localStorage.setItem('spellingBeeHighScores', JSON.stringify(highScores));
+        document.getElementById('high-score-entry').style.display = "none";
+        showHighScores();
+    }
+
+    function openShop() {
+        document.getElementById('shop-shield-count').innerText = totalShields;
+        document.getElementById('shop-message').innerText = "";
+        document.getElementById('shop-modal').style.display = "block";
+    }
+
+    function closeShop() {
+        document.getElementById('shop-modal').style.display = "none";
+    }
+
+    function buyHint() {
+        const msg = document.getElementById('shop-message');
+        if (!currentWord) {
+            msg.innerText = "No active word!";
+            msg.style.color = "red";
+            return;
+        }
+        if (totalShields >= 3) {
+            if (revealedIndex >= currentWord.length) {
+                 msg.innerText = "Word already fully revealed!";
+                 msg.style.color = "orange";
+                 return;
+            }
+            totalShields -= 3;
+            revealLetter('shield'); 
+            updateScoreboard();
+            document.getElementById('shop-shield-count').innerText = totalShields;
+            el.feedback.innerText = "Hint purchased! -3 Shields";
+            el.feedback.style.color = "green";
+            msg.innerText = "Hint purchased!";
+            msg.style.color = "green";
+            playTone(800, 'sine', 0.2);
+        } else {
+            msg.innerText = "Not enough shields!";
+            msg.style.color = "red";
+        }
+    }
+
+    function buySafeSkip() {
+        const msg = document.getElementById('shop-message');
+        if (!currentWord) {
+            msg.innerText = "No active word!";
+            msg.style.color = "red";
+            return;
+        }
+        if (totalShields >= 10) {
+            totalShields -= 10;
+            updateScoreboard();
+            el.feedback.innerText = "Safe Skip! -10 Shields";
+            el.feedback.style.color = "green";
+            speak("Safe skip.", false);
+            playTone(800, 'sine', 0.2);
+            closeShop();
+            
+            stopTimer();
+            stopMicrophone();
+            setTimeout(nextWord, 1000);
+        } else {
+            msg.innerText = "Not enough shields!";
+            msg.style.color = "red";
+        }
+    }
+
+    function buyDoubleShields() {
+        const msg = document.getElementById('shop-message');
+        if (doubleShieldsActive) {
+            msg.innerText = "Already active!";
+            msg.style.color = "orange";
+            return;
+        }
+        if (totalShields >= 5) {
+            totalShields -= 5;
+            doubleShieldsActive = true;
+            updateScoreboard();
+            document.getElementById('shop-shield-count').innerText = totalShields;
+            el.feedback.innerText = "Double Shields Active! Next word worth 2x.";
+            el.feedback.style.color = "purple";
+            updateDifficultyDisplay();
+            msg.innerText = "Double Shields Active!";
+            msg.style.color = "purple";
+            playTone(800, 'sine', 0.2);
+        } else {
+            msg.innerText = "Not enough shields!";
+            msg.style.color = "red";
+        }
+    }
+
+    function speak(text, resume, rate) {
+        if(synth.speaking) synth.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        if(availableVoices[el.voiceSelect.value]) utter.voice = availableVoices[el.voiceSelect.value];
+        utter.rate = rate || 0.9;
+        synth.speak(utter);
+    }
+
+    function loadVoices() {
+        if (!synth) return;
+        availableVoices = synth.getVoices();
+        if (availableVoices.length === 0) {
+            if (!loadVoices.attempts) loadVoices.attempts = 0;
+            if (loadVoices.attempts < 20) {
+                loadVoices.attempts++;
+                setTimeout(loadVoices, 100);
+            } else {
+                el.voiceSelect.innerHTML = "<option value=''>Default Voice</option>";
+            }
+            return;
+        }
+        loadVoices.attempts = 0;
+        el.voiceSelect.innerHTML = "";
+        let preferredIndex = -1;
+        availableVoices.forEach((v, i) => {
+            const lang = v.lang.replace('_', '-'); 
+            if (lang.startsWith('en')) {
+                const opt = document.createElement('option');
+                opt.text = `${v.name} (${lang})`;
+                opt.value = i; 
+                el.voiceSelect.appendChild(opt);
+                
+                if (preferredIndex === -1 && (v.name.includes("Natural") || v.name.includes("Premium") || v.name.includes("Samantha") || v.name.includes("Zira"))) {
+                    preferredIndex = i;
+                }
+            }
+        });
+        if (preferredIndex !== -1) el.voiceSelect.value = preferredIndex;
+    }
+    if (synth && synth.onvoiceschanged !== undefined) {
+        synth.onvoiceschanged = loadVoices;
+    }
+
+    function clearText() { el.transcript.innerText = ""; }
+
+    function startTimer() {
+        clearInterval(timerInterval);
+        currentTotalTime = getTimerDuration();
+        timeLeft = currentTotalTime;
+        updateTimerDisplay(timeLeft);
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            updateTimerDisplay(timeLeft);
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                handleTimeout();
+            }
+        }, 1000);
+    }
+
+    function stopTimer() {
+        clearInterval(timerInterval);
+    }
+
+    function updateTimerDisplay(time) {
+        const fill = document.getElementById('timer-fill');
+        if (fill) {
+            const total = currentTotalTime || 60;
+            const percentage = (time / total) * 100;
+            fill.style.width = percentage + "%";
+            if (time <= 5) fill.style.background = "#c62828"; 
+            else if (time <= 15) fill.style.background = "#fbc02d"; 
+            else fill.style.background = "#4caf50"; 
+        }
+    }
+
+    function getTimerDuration() {
+        return parseInt(el.timerSelect.value, 10);
+    }
+
+    function handleTimeout() {
+        stopMicrophone();
+        opponentScore++;
+        streak = 0;
+        el.feedback.innerText = "⏰ Time's up! The word was " + currentWord;
+        el.feedback.style.color = "red";
+        updateScoreboard();
+        speak("Time's up! The word was " + currentWord, false);
+        el.word.innerText = currentWord.split('').join(' ');
+    }
+
+    function playTone(freq, type, duration) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        const ctx = new AudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = type;
+        osc.frequency.value = freq;
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        gain.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + duration);
+        osc.stop(ctx.currentTime + duration);
+        setTimeout(() => ctx.close(), duration * 1000 + 100);
+    }
+
+    if (window.SpeechRecognition || window.webkitSpeechRecognition) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.lang = 'en-US';
+        recognition.onresult = (e) => {
+            // ECHO GUARD
+            if (window.speechSynthesis.speaking) return; 
+
+            let heard = "";
+            for (let i = e.resultIndex; i < e.results.length; ++i) heard += e.results[i][0].transcript;
+            
+            let lower = heard.toLowerCase();
+            if (lower.includes("origin") || lower.includes("language") || lower.includes("where is it from")) {
+                provideOrigin(); return;
+            }
+            if (lower.includes("define") || lower.includes("definition") || lower.includes("what does it mean")) {
+                askDefinition(); return;
+            }
+            
+            el.transcript.innerText = parseSpelling(el.transcript.innerText + " " + heard);
+        };
+    }
+
+    function toggleListen() {
+        if(!recognition) return;
+        if(isListening) { 
+            stopMicrophone();
+        } else { 
+            recognition.start(); 
+            isListening=true; 
+            el.listenBtn.innerText="🛑 Stop"; 
+            el.listenBtn.style.background="#c62828"; 
+        }
+    }
+
+    function parseSpelling(text) {
+        let clean = text.toLowerCase();
+        clean = clean.replace(/(\bhome\s*lite\b|\bhomelite\b|\bfraumult\b|\bzoom\s*out\b|\bonline\b|\bunlocked\b)/g, "umlaut");
+        clean = clean.replace(/a\s*umlaut/g, "ä").replace(/e\s*acute/g, "é").replace(/i\s*circumflex/g, "î").replace(/n\s*tilde/g, "ñ");
+        clean = clean.replace(/\bdouble\s*(you|u)\b/g, "w");
+        clean = clean.replace(/\bare\b/g, "r").replace(/\byou\b/g, "u").replace(/\bbe\b/g, "b").replace(/\bwhy\b/g, "y");
+        clean = clean.replace(/\beye\b/g, "i").replace(/\bsea\b/g, "c").replace(/\bsee\b/g, "c").replace(/\bpea\b/g, "p");
+        clean = clean.replace(/\btee\b/g, "t").replace(/\btea\b/g, "t").replace(/\boh\b/g, "o").replace(/\bcue\b/g, "q");
+        clean = clean.replace(/\bqueue\b/g, "q").replace(/\bex\b/g, "x");
+        clean = clean.replace(/[^a-z \-\'éäâîñöüçàèìòù]/g, ""); 
+        return clean;
+    }
+
+    init();
+</script>
+</body>
+</html>
