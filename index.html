@@ -14,11 +14,11 @@
         .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: 4px solid #2e7d32; }
         .word-display { font-size: 26px; font-weight: bold; color: #1b5e20; margin: 20px 0; min-height: 40px; border-bottom: 2px dashed #81c784; }
         .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
-        button, select { padding: 12px; font-size: 16px; cursor: pointer; border: none; border-radius: 8px; font-weight: 600; transition: 0.2s; width: 100%; box-sizing: border-box; }
+        button, select, input { padding: 12px; font-size: 16px; cursor: pointer; border: none; border-radius: 8px; font-weight: 600; transition: 0.2s; width: 100%; box-sizing: border-box; }
         
         #voice-select { background-color: #e3f2fd; color: #1565c0; grid-column: span 2; margin-bottom: 10px; border: 1px solid #bbdefb; }
-        .settings { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        #list-select, #difficulty-select, #timer-select { background-color: #455a64; color: white; }
+        .settings { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        #list-select, #difficulty-select, #timer-select, #game-duration-select, #custom-duration-input { background-color: #455a64; color: white; }
         
         /* Button Colors */
         #start-btn { background-color: #0277bd; color: white; } 
@@ -29,6 +29,7 @@
         #def-btn { background-color: #6a1b9a; color: white; } 
         #origin-btn { background-color: #5d4037; color: white; }
         #hint-btn { background-color: #ff9800; color: white; }
+        #pause-btn { background-color: #ff9800; color: white; grid-column: span 2; }
         #skip-btn { background-color: #78909c; color: white; grid-column: span 2; }
         #clear-btn { background-color: #c62828; color: white; grid-column: span 2; } 
         #submit-btn { background-color: #fbc02d; color: #37474f; grid-column: span 2; } 
@@ -53,6 +54,7 @@
         #timer-bar { width: 100%; height: 10px; background: #ddd; border-radius: 5px; margin: 10px 0; overflow: hidden; }
         #timer-fill { height: 100%; background: #4caf50; width: 100%; transition: width 1s linear, background 0.5s; }
 
+        @media (max-width: 800px) { .settings { grid-template-columns: 1fr 1fr; } }
         @media (max-width: 600px) { 
             .settings { grid-template-columns: 1fr; }
             #scoreboard { font-size: 14px; white-space: normal; }
@@ -84,8 +86,19 @@
             <option value="90">90s Timer</option>
             <option value="120">120s Timer</option>
         </select>
+        <select id="game-duration-select" onchange="changeSettings()">
+            <option value="0">No Game Limit</option>
+            <option value="10">10 Minutes</option>
+            <option value="20">20 Minutes</option>
+            <option value="30">30 Minutes</option>
+            <option value="45">45 Minutes</option>
+            <option value="60">60 Minutes</option>
+            <option value="custom">Custom...</option>
+        </select>
+        <input type="number" id="custom-duration-input" placeholder="Minutes" style="display:none;" onchange="changeSettings()" min="1">
     </div>
     <div id="timer-bar"><div id="timer-fill"></div></div>
+    <div id="game-timer-bar" style="display:none; width: 100%; height: 10px; background: #ddd; border-radius: 5px; margin: 10px 0; overflow: hidden;"><div id="game-timer-fill" style="height: 100%; background: #2196f3; width: 100%; transition: width 1s linear;"></div></div>
     <div id="word-area" class="word-display">Loading Word Lists...</div>
     <div id="difficulty-indicator" style="height: 30px; font-size: 24px; margin-top: 10px; color: #555;"></div>
     <div id="transcript-display" class="transcript-view" contenteditable="true"></div>
@@ -99,6 +112,7 @@
         <button type="button" id="def-btn" onclick="askDefinition()">4. Define</button>
         <button type="button" id="origin-btn" onclick="provideOrigin()">🌍 Origin</button>
         <button type="button" id="hint-btn" onclick="revealLetter()">💡 Hint</button>
+        <button type="button" id="pause-btn" onclick="togglePause()">⏸️ Pause</button>
         <button type="button" id="skip-btn" onclick="skipWord()">⏭️ Give Up</button>
         <button type="button" id="clear-btn" onclick="clearText()">🗑️ Clear</button>
         <button type="button" id="submit-btn" onclick="submitWord()">✅ Shoot!</button>
@@ -222,6 +236,7 @@
     let revealedIndex = 0;
     let streak = 0;
     let isListening = false;
+    let isPaused = false;
     let isRoundActive = false;
     let recognition = null;
     let synth = window.speechSynthesis;
@@ -408,6 +423,8 @@
         listSelect: document.getElementById('list-select'),
         difficultySelect: document.getElementById('difficulty-select'),
         timerSelect: document.getElementById('timer-select'),
+        gameDurationSelect: document.getElementById('game-duration-select'),
+        customDurationInput: document.getElementById('custom-duration-input'),
         voiceSelect: document.getElementById('voice-select'),
         scoreBoard: document.getElementById('scoreboard')
     };
@@ -577,6 +594,13 @@
     }
 
     function changeSettings() {
+        if (el.gameDurationSelect.value === 'custom') {
+            el.customDurationInput.style.display = 'block';
+        } else {
+            el.customDurationInput.style.display = 'none';
+        }
+
+        stopGameTimer();
         generatePool();
         if (el.listSelect.value === "Daily") {
              el.word.innerText = `Daily Challenge: 20 words for ${new Date().toLocaleDateString()}. ` + currentThemeConfig.startInstruction;
@@ -658,6 +682,7 @@
 
     function checkGameOver() {
         if (playerScore < -20 || shieldScore < 0) {
+            stopGameTimer();
             stopTimer();
             currentWord = "";
             el.word.innerText = "GAME OVER";
@@ -690,12 +715,15 @@
         incorrectWords.clear();
         isRetryMode = false;
         retryMistakes = 0;
+        isPaused = false;
         retryShieldScore = 0;
         doubleShieldsActive = false;
         currentWord = "";
+        stopGameTimer();
         stopTimer();
         revealedIndex = 0;
         
+        document.getElementById('pause-btn').innerText = "⏸️ Pause";
         updateScoreboard();
         el.word.innerText = currentThemeConfig.startInstruction;
         el.word.style.color = "#1b5e20"; 
@@ -721,6 +749,7 @@
             endGame();
             return;
         }
+        startGameTimer();
         if (activePool.length === 0) generatePool();
         currentWord = activePool.shift() || "spelling";
         currentDifficulty = wordDifficulty[currentWord.toLowerCase()] || 1;
@@ -732,6 +761,126 @@
         el.word.innerText = "Press 'Speak' button to answer";
         speak("The word is " + currentWord, false);
         startTimer();
+        isPaused = false;
+        document.getElementById('pause-btn').innerText = "⏸️ Pause";
+    }
+
+    let gameTimerInterval = null;
+    let gameTimeLeft = 0;
+    let totalGameTime = 0;
+    let gameTimerRunning = false;
+
+    function startGameTimer(resume = false) {
+        if (gameTimerRunning) return;
+        
+        let durationMinutes = 0;
+        if (el.gameDurationSelect.value === 'custom') {
+            durationMinutes = parseInt(el.customDurationInput.value, 10);
+            if (isNaN(durationMinutes) || durationMinutes <= 0) return;
+        } else {
+            durationMinutes = parseInt(el.gameDurationSelect.value, 10);
+        }
+        
+        if (durationMinutes === 0) return;
+
+        if (!resume) {
+            totalGameTime = durationMinutes * 60;
+            gameTimeLeft = totalGameTime;
+        }
+        gameTimerRunning = true;
+        
+        document.getElementById('game-timer-bar').style.display = 'block';
+        updateGameTimerDisplay();
+
+        clearInterval(gameTimerInterval);
+        gameTimerInterval = setInterval(() => {
+            gameTimeLeft--;
+            updateGameTimerDisplay();
+            if (gameTimeLeft <= 0) {
+                handleGameTimeout();
+            }
+        }, 1000);
+    }
+
+    function updateGameTimerDisplay() {
+        const fill = document.getElementById('game-timer-fill');
+        if (fill) {
+            const percentage = (gameTimeLeft / totalGameTime) * 100;
+            fill.style.width = percentage + "%";
+            if (percentage <= 10) fill.style.background = "#c62828";
+            else if (percentage <= 25) fill.style.background = "#fbc02d";
+            else fill.style.background = "#2196f3";
+        }
+    }
+
+    function handleGameTimeout() {
+        stopGameTimer();
+        stopTimer();
+        stopMicrophone();
+        
+        el.word.innerText = "TIME'S UP!";
+        el.word.style.color = "red";
+        el.status.innerText = "Game Over - Time Limit Reached";
+        el.feedback.innerText = "⏰ Game Over! Time limit reached.";
+        el.feedback.style.color = "red";
+        speak("Time is up. Game Over.", false);
+        
+        setTimeout(endGame, 3000);
+    }
+
+    function stopGameTimer() {
+        clearInterval(gameTimerInterval);
+        gameTimerRunning = false;
+        document.getElementById('game-timer-bar').style.display = 'none';
+    }
+
+    function togglePause() {
+        if (!currentWord) return;
+        
+        const btn = document.getElementById('pause-btn');
+        
+        if (isPaused) {
+            // Resume
+            isPaused = false;
+            btn.innerText = "⏸️ Pause";
+            btn.style.backgroundColor = "#ff9800";
+            toggleControls(true);
+            
+            startTimer(true);
+            if (totalGameTime > 0 && gameTimeLeft > 0) {
+                startGameTimer(true);
+            }
+            if (revealedIndex > 0) {
+                let display = currentWord.substring(0, revealedIndex) + "_".repeat(currentWord.length - revealedIndex);
+                el.word.innerText = display.split('').join(' ');
+            } else {
+                el.word.innerText = "Press 'Speak' button to answer";
+            }
+            el.status.innerText = "Game Resumed.";
+        } else {
+            // Pause
+            isPaused = true;
+            btn.innerText = "▶️ Resume";
+            btn.style.backgroundColor = "#4caf50";
+            toggleControls(false);
+            
+            stopTimer();
+            clearInterval(gameTimerInterval);
+            gameTimerRunning = false;
+            stopMicrophone();
+            el.word.innerText = "PAUSED";
+            el.status.innerText = "Game Paused.";
+        }
+    }
+
+    function toggleControls(enable) {
+        const buttons = document.querySelectorAll('.controls button');
+        buttons.forEach(b => {
+            if (b.id !== 'pause-btn' && b.id !== 'end-game-btn') {
+                b.disabled = !enable;
+            }
+        });
+        el.transcript.contentEditable = enable;
     }
 
     function updateDifficultyDisplay() {
@@ -1141,6 +1290,7 @@
     }
 
     function endGame() {
+        stopGameTimer();
         stopTimer();
         stopMicrophone();
         
@@ -1400,10 +1550,12 @@
 
     function clearText() { el.transcript.innerText = ""; }
 
-    function startTimer() {
+    function startTimer(resume = false) {
         clearInterval(timerInterval);
-        currentTotalTime = getTimerDuration();
-        timeLeft = currentTotalTime;
+        if (!resume) {
+            currentTotalTime = getTimerDuration();
+            timeLeft = currentTotalTime;
+        }
         updateTimerDisplay(timeLeft);
         timerInterval = setInterval(() => {
             timeLeft--;
