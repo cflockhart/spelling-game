@@ -252,6 +252,25 @@
         
         /* Animations */
         @keyframes popIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        #keyboard-toast {
+            display: none;
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.85);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            z-index: 2000;
+            font-size: 16px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            pointer-events: none;
+            backdrop-filter: blur(4px);
+            white-space: nowrap;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
@@ -415,6 +434,8 @@
     </div>
 </div>
 
+<div id="keyboard-toast">⌨️ <b>Enter</b> to Submit &nbsp;|&nbsp; ➡️ <b>Right Arrow</b> for Next Word</div>
+
 <script>
     const schoolLists = {
         "school_one_bee": [],
@@ -458,6 +479,7 @@
     let doubleShieldsActive = false;
     let retryShieldScore = 0;
     let highScores = JSON.parse(localStorage.getItem('spellingBeeHighScores')) || [];
+    let keyboardInstructionsShown = false;
 
     const themeData = {
         "Soccer": {
@@ -639,6 +661,10 @@
     };
 
     el.transcript.addEventListener('keydown', (e) => {
+        if (!keyboardInstructionsShown && currentWord) {
+            showKeyboardInstructions();
+            keyboardInstructionsShown = true;
+        }
         if (e.key === 'Enter') {
             e.preventDefault();
             submitWord();
@@ -945,6 +971,7 @@
         isPaused = false;
         retryShieldScore = 0;
         doubleShieldsActive = false;
+        keyboardInstructionsShown = false;
         currentWord = "";
         stopGameTimer();
         stopTimer();
@@ -1741,6 +1768,24 @@
             msg.innerText = "Not enough coins!";
             msg.style.color = "red";
         }
+    }
+
+    function showKeyboardInstructions() {
+        const toast = document.getElementById('keyboard-toast');
+        if (!toast) return;
+        toast.style.display = 'block';
+        toast.animate([
+            { opacity: 0, transform: 'translate(-50%, 20px)' },
+            { opacity: 1, transform: 'translate(-50%, 0)' }
+        ], {
+            duration: 300,
+            fill: 'forwards'
+        });
+        
+        setTimeout(() => {
+            const fadeOut = toast.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 500, fill: 'forwards' });
+            fadeOut.onfinish = () => toast.style.display = 'none';
+        }, 4000);
     }
 
     function speak(text, resume, rate) {
