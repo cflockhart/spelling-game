@@ -645,6 +645,17 @@
         }
     });
 
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') {
+            const modals = ['summary-modal', 'high-scores-modal', 'shop-modal', 'login-modal'];
+            if (modals.some(id => document.getElementById(id).style.display === 'block')) return;
+            if (document.activeElement === el.transcript && currentWord) return;
+
+            e.preventDefault();
+            nextWord();
+        }
+    });
+
     async function init() {
         loadGameState();
 
