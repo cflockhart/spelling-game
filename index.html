@@ -10,31 +10,143 @@
     <meta property="og:type" content="website">
     <title>Spelling Bee: School Modes</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; text-align: center; padding: 15px; background-color: #e8f5e9; }
-        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: 4px solid #2e7d32; }
-        .word-display { font-size: 26px; font-weight: bold; color: #1b5e20; margin: 20px 0; min-height: 40px; border-bottom: 2px dashed #81c784; }
-        .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
-        button, select, input { padding: 12px; font-size: 16px; cursor: pointer; border: none; border-radius: 8px; font-weight: 600; transition: 0.2s; width: 100%; box-sizing: border-box; }
+        :root {
+            --primary: #007AFF;
+            --secondary: #5856D6;
+            --success: #34C759;
+            --warning: #FF9500;
+            --danger: #FF3B30;
+            --bg-color: #F2F2F7;
+            --card-bg: #FFFFFF;
+            --text-main: #000000;
+            --text-secondary: #8E8E93;
+            --radius: 16px;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            text-align: center; 
+            padding: 20px; 
+            background-color: var(--bg-color); 
+            color: var(--text-main);
+            margin: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .container { 
+            max-width: 600px; 
+            margin: 0 auto; 
+            background: var(--card-bg); 
+            padding: 24px; 
+            border-radius: 24px; 
+            box-shadow: var(--shadow); 
+            border: none !important; /* Override theme inline styles */
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 24px;
+            letter-spacing: -0.5px;
+        }
+
+        .word-display { 
+            font-size: 32px; 
+            font-weight: 700; 
+            color: var(--text-main) !important; 
+            margin: 30px 0; 
+            min-height: 40px; 
+            border-bottom: none;
+            background: #F2F2F7;
+            padding: 20px;
+            border-radius: var(--radius);
+        }
+
+        .controls { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 12px; 
+            margin-bottom: 24px; 
+        }
+
+        button, select, input { 
+            padding: 16px; 
+            font-size: 17px; 
+            cursor: pointer; 
+            border: none; 
+            border-radius: 12px; 
+            font-weight: 600; 
+            transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); 
+            width: 100%; 
+            box-sizing: border-box; 
+            font-family: inherit;
+        }
+
+        button:active {
+            transform: scale(0.96);
+            opacity: 0.8;
+        }
+
+        /* Modern Input Styles */
+        select, input {
+            background-color: #F2F2F7;
+            color: var(--text-main);
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007AFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px top 50%;
+            background-size: 12px auto;
+        }
         
-        #voice-select { background-color: #e3f2fd; color: #1565c0; grid-column: span 2; margin-bottom: 10px; border: 1px solid #bbdefb; }
-        .settings { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        #list-select, #difficulty-select, #timer-select, #game-duration-select, #custom-duration-input { background-color: #455a64; color: white; }
+        #voice-select { background-color: #F2F2F7; color: var(--text-main); grid-column: span 2; margin-bottom: 12px; border: 1px solid transparent; }
         
-        /* Button Colors */
-        #start-btn { background-color: #0277bd; color: white; } 
-        #repeat-btn { background-color: #0097a7; color: white; } 
-        #slow-btn { background-color: #00bcd4; color: white; }
-        #listen-btn { background-color: #2e7d32; color: white; } 
-        #sent-btn { background-color: #009688; color: white; } 
-        #def-btn { background-color: #6a1b9a; color: white; } 
-        #origin-btn { background-color: #5d4037; color: white; }
-        #hint-btn { background-color: #ff9800; color: white; }
-        #pause-btn { background-color: #ff9800; color: white; grid-column: span 2; }
-        #skip-btn { background-color: #78909c; color: white; grid-column: span 2; }
-        #clear-btn { background-color: #c62828; color: white; grid-column: span 2; } 
-        #submit-btn { background-color: #fbc02d; color: #37474f; grid-column: span 2; } 
+        .settings { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 12px; 
+            margin-bottom: 24px; 
+        }
         
-        #scoreboard { background: #212121; color: #fff; padding: 10px; border-radius: 8px; font-size: 20px; font-weight: bold; font-family: monospace; letter-spacing: 1px; margin-top: 20px; border: 3px solid #fff; box-shadow: 0 3px 10px rgba(0,0,0,0.3); white-space: nowrap; transition: all 0.3s; }
+        #list-select, #difficulty-select, #timer-select, #game-duration-select, #custom-duration-input { 
+            background-color: #F2F2F7; 
+            color: var(--text-main); 
+        }
+
+        /* Button Specifics - iOS Style */
+        #start-btn { background-color: var(--primary); color: white; box-shadow: 0 4px 10px rgba(0,122,255,0.3); } 
+        #submit-btn { background-color: var(--success); color: white; grid-column: span 2; box-shadow: 0 4px 10px rgba(52,199,89,0.3); font-size: 18px; padding: 18px; } 
+        #listen-btn { background-color: var(--primary); color: white; } 
+        
+        /* Secondary / Tertiary Buttons */
+        #repeat-btn, #slow-btn, #sent-btn, #def-btn, #origin-btn, #hint-btn { 
+            background-color: #E5E5EA; 
+            color: var(--primary); 
+        }
+        
+        #pause-btn { background-color: var(--warning); color: white; grid-column: span 2; }
+        #skip-btn { background-color: #E5E5EA; color: var(--danger); grid-column: span 2; }
+        #clear-btn { background-color: #E5E5EA; color: var(--text-secondary); grid-column: span 2; } 
+        #restart-btn { background-color: var(--danger); color: white; grid-column: span 2; }
+        #end-game-btn { background-color: #8E8E93; color: white; grid-column: span 2; }
+        #high-scores-btn { background-color: var(--secondary); color: white; grid-column: span 2; }
+        #shop-btn { background-color: #AF52DE; color: white; grid-column: span 2; }
+
+        #scoreboard { 
+            background: #1C1C1E; 
+            color: #fff; 
+            padding: 16px; 
+            border-radius: 16px; 
+            font-size: 18px; 
+            font-weight: 600; 
+            font-family: -apple-system, monospace; 
+            letter-spacing: 0.5px; 
+            margin-top: 24px; 
+            border: none; 
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15); 
+            white-space: normal; 
+        }
         
         .streak-5 { background-color: #fff176 !important; color: #000 !important; border-color: #fdd835 !important; }
         .streak-10 { background-color: #ffb74d !important; color: #000 !important; border-color: #fb8c00 !important; box-shadow: 0 0 10px #ffb74d; }
@@ -43,22 +155,95 @@
         @keyframes burn { from { box-shadow: 0 0 10px #ff5722; transform: scale(1); } to { box-shadow: 0 0 25px #ffeb3b, 0 0 10px #ff5722 inset; transform: scale(1.02); } }
         .flying-shield { position: fixed; z-index: 2000; pointer-events: none; }
 
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); }
-        .modal-content { background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%; max-width: 500px; border-radius: 10px; text-align: center; }
-        .modal-content h2 { color: #2e7d32; }
+        /* Modal Polish */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; backdrop-filter: blur(5px); background-color: rgba(0,0,0,0.3); }
+        .modal-content { 
+            background-color: var(--card-bg); 
+            border-radius: 24px; 
+            border: none; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2); 
+            padding: 32px;
+            max-width: 90%;
+            width: 400px;
+            margin: 15% auto;
+            text-align: center;
+            animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .modal-content h2 { margin-top: 0; color: var(--text-main); }
         .modal-content ul { list-style-type: none; padding: 0; }
         .modal-content li { background: #ffebee; margin: 5px; padding: 5px; border-radius: 4px; color: #c62828; }
 
         #status-bar { font-size: 13px; color: #555; margin-top: 10px; padding: 8px; background: #f1f8e9; border-radius: 4px; font-style: italic; }
-        .transcript-view { font-size: 22px; color: #0d47a1; margin: 15px 0 20px 0; font-family: monospace; letter-spacing: 2px; border: 2px solid #bbdefb; padding: 10px; border-radius: 8px; min-height: 45px; background: #fff; outline: none; }
-        #timer-bar { width: 100%; height: 10px; background: #ddd; border-radius: 5px; margin: 10px 0; overflow: hidden; }
-        #timer-fill { height: 100%; background: #4caf50; width: 100%; transition: width 1s linear, background 0.5s; }
-
-        @media (max-width: 800px) { .settings { grid-template-columns: 1fr 1fr; } }
-        @media (max-width: 600px) { 
-            .settings { grid-template-columns: 1fr; }
-            #scoreboard { font-size: 14px; white-space: normal; }
+        
+        .transcript-view { 
+            font-size: 28px; 
+            color: var(--text-main); 
+            margin: 20px 0; 
+            font-family: -apple-system, sans-serif; 
+            font-weight: 600;
+            letter-spacing: 1px; 
+            border: 2px solid #E5E5EA; 
+            padding: 20px; 
+            border-radius: 16px; 
+            min-height: 60px; 
+            background: #fff; 
+            outline: none; 
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
         }
+        
+        .transcript-view:focus {
+            border-color: var(--primary);
+        }
+
+        #game-timer-bar { 
+            width: 100%; 
+            height: 6px; 
+            background: #E5E5EA; 
+            border-radius: 3px; 
+            margin: 16px 0; 
+            overflow: hidden; 
+        }
+        
+        #timer-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 10px auto;
+        }
+        
+        .progress-ring__circle {
+            transition: stroke-dashoffset 1s linear, stroke 0.5s;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+            stroke-linecap: round;
+        }
+        
+        #timer-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        #game-timer-fill { height: 100%; background: var(--primary); width: 100%; transition: width 1s linear; border-radius: 3px; }
+
+        /* Responsive */
+        @media (max-width: 600px) { 
+            body { padding: 10px; }
+            .container { padding: 16px; border-radius: 16px; }
+            .settings { grid-template-columns: 1fr; }
+            .controls { grid-template-columns: 1fr 1fr; }
+            #scoreboard { font-size: 14px; }
+            h1 { font-size: 20px; }
+            button { padding: 16px; }
+        }
+        
+        /* Animations */
+        @keyframes popIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
@@ -97,7 +282,13 @@
         </select>
         <input type="number" id="custom-duration-input" placeholder="Minutes" style="display:none;" onchange="changeSettings()" min="1">
     </div>
-    <div id="timer-bar"><div id="timer-fill"></div></div>
+    <div id="timer-container">
+        <svg class="progress-ring" width="120" height="120">
+            <circle class="progress-ring__background" stroke="#E5E5EA" stroke-width="8" fill="transparent" r="52" cx="60" cy="60"/>
+            <circle id="timer-ring" class="progress-ring__circle" stroke="var(--success)" stroke-width="8" fill="transparent" r="52" cx="60" cy="60"/>
+        </svg>
+        <div id="timer-text">60</div>
+    </div>
     <div id="game-timer-bar" style="display:none; width: 100%; height: 10px; background: #ddd; border-radius: 5px; margin: 10px 0; overflow: hidden;"><div id="game-timer-fill" style="height: 100%; background: #2196f3; width: 100%; transition: width 1s linear;"></div></div>
     <div id="word-area" class="word-display">Loading Word Lists...</div>
     <div id="difficulty-indicator" style="height: 30px; font-size: 24px; margin-top: 10px; color: #555;"></div>
@@ -428,6 +619,13 @@
         voiceSelect: document.getElementById('voice-select'),
         scoreBoard: document.getElementById('scoreboard')
     };
+
+    el.transcript.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            submitWord();
+        }
+    });
 
     async function init() {
         loadGameState();
@@ -1572,14 +1770,22 @@
     }
 
     function updateTimerDisplay(time) {
-        const fill = document.getElementById('timer-fill');
-        if (fill) {
+        const ring = document.getElementById('timer-ring');
+        const text = document.getElementById('timer-text');
+        if (ring && text) {
+            const radius = ring.r.baseVal.value;
+            const circumference = radius * 2 * Math.PI;
             const total = currentTotalTime || 60;
-            const percentage = (time / total) * 100;
-            fill.style.width = percentage + "%";
-            if (time <= 5) fill.style.background = "#c62828"; 
-            else if (time <= 15) fill.style.background = "#fbc02d"; 
-            else fill.style.background = "#4caf50"; 
+            const offset = circumference - (time / total) * circumference;
+            
+            ring.style.strokeDasharray = `${circumference} ${circumference}`;
+            ring.style.strokeDashoffset = offset;
+            
+            if (time <= 5) ring.style.stroke = "var(--danger)"; 
+            else if (time <= 15) ring.style.stroke = "var(--warning)"; 
+            else ring.style.stroke = "var(--success)";
+            
+            text.innerText = time;
         }
     }
 
