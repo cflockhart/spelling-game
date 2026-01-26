@@ -357,7 +357,7 @@
     <div class="modal-content">
         <h2>Session Summary</h2>
         <p>Correct Words: <span id="summary-correct">0</span></p>
-        <p>Shields: <span id="summary-shields">0</span></p>
+        <p>Coins: <span id="summary-shields">0</span></p>
         <div id="incorrect-list-container">
             <h3>Incorrect Words</h3>
             <ul id="incorrect-list"></ul>
@@ -380,7 +380,7 @@
                 <tr style="background-color: #f2f2f2; border-bottom: 2px solid #ddd;">
                     <th style="padding: 8px;">Rank</th>
                     <th style="padding: 8px;">Name</th>
-                    <th style="padding: 8px;">Shields</th>
+                    <th style="padding: 8px;">Coins</th>
                     <th style="padding: 8px;">Date</th>
                 </tr>
             </thead>
@@ -394,11 +394,11 @@
 <div id="shop-modal" class="modal">
     <div class="modal-content">
         <h2>🛒 Shop</h2>
-        <p>Shields: <span id="shop-shield-count">0</span></p>
+        <p>Coins: <span id="shop-shield-count">0</span></p>
         <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px;">
-            <button onclick="buyHint()" style="background-color: #ff9800; color: white; padding: 10px; border-radius: 5px; border: none; cursor: pointer; font-weight: bold;">💡 Buy Hint (3 🛡️)</button>
-            <button onclick="buySafeSkip()" style="background-color: #2196f3; color: white; padding: 10px; border-radius: 5px; border: none; cursor: pointer; font-weight: bold;">⏭️ Safe Skip (10 🛡️)</button>
-            <button onclick="buyDoubleShields()" style="background-color: #9c27b0; color: white; padding: 10px; border-radius: 5px; border: none; cursor: pointer; font-weight: bold;">✨ Double Shields (5 🛡️)</button>
+            <button onclick="buyHint()" style="background-color: #ff9800; color: white; padding: 10px; border-radius: 5px; border: none; cursor: pointer; font-weight: bold;">💡 Buy Hint (3 🪙)</button>
+            <button onclick="buySafeSkip()" style="background-color: #2196f3; color: white; padding: 10px; border-radius: 5px; border: none; cursor: pointer; font-weight: bold;">⏭️ Safe Skip (10 🪙)</button>
+            <button onclick="buyDoubleCoins()" style="background-color: #9c27b0; color: white; padding: 10px; border-radius: 5px; border: none; cursor: pointer; font-weight: bold;">✨ Double Coins (5 🪙)</button>
         </div>
         <div id="shop-message" style="min-height: 24px; margin-bottom: 10px; font-weight: bold;"></div>
         <button onclick="closeShop()" style="background-color: #546e7a; color: white;">Close</button>
@@ -408,7 +408,7 @@
 <div id="login-modal" class="modal" style="display:block; background-color: rgba(0,0,0,0.9);">
     <div class="modal-content">
         <h2>👋 Welcome!</h2>
-        <p>Enter your name to access your Shield Bank:</p>
+        <p>Enter your name to access your Coin Bank:</p>
         <input type="text" id="start-player-name" placeholder="Player Name" style="padding: 12px; font-size: 18px; width: 80%; margin-bottom: 20px; border-radius: 8px; border: 1px solid #ccc;">
         <br>
         <button onclick="startGameUser()" style="background-color: #4caf50; color: white; padding: 12px 30px; font-size: 18px; border-radius: 8px; border: none; cursor: pointer;">Start Game</button>
@@ -1111,7 +1111,7 @@
     }
 
     function updateDifficultyDisplay() {
-        const shields = "🛡️".repeat(currentDifficulty);
+        const shields = "⭐".repeat(currentDifficulty);
         document.getElementById('difficulty-indicator').innerText = shields;
         if (doubleShieldsActive) {
             document.getElementById('difficulty-indicator').innerText += " (2x Active ✨)";
@@ -1357,7 +1357,7 @@
             if (doubleShieldsActive) {
                 earned *= 2;
                 doubleShieldsActive = false;
-                audioPhrase = "Double shields! " + audioPhrase;
+                audioPhrase = "Double coins! " + audioPhrase;
             }
 
             shieldsSinceLastMilestone += earned;
@@ -1406,7 +1406,7 @@
                     shieldScore += bonus;
                     totalShields += bonus;
                 }
-                audioPhrase += ` ${bonus} Bonus Shields!`;
+                audioPhrase += ` ${bonus} Bonus Coins!`;
                 animateShieldsToBank(bonus);
                 shieldsSinceLastMilestone = 0;
             }
@@ -1415,7 +1415,7 @@
                 if (retryMistakes === 0) {
                     shieldScore += retryShieldScore;
                     totalShields += retryShieldScore;
-                    audioPhrase += " Perfect retry! Shields added!";
+                    audioPhrase += " Perfect retry! Coins added!";
                     playTone(1200, 'square', 1.0);
                 }
                 setTimeout(endGame, 3000);
@@ -1485,7 +1485,7 @@
         for (let i = 0; i < count; i++) {
             setTimeout(() => {
                 const shield = document.createElement('div');
-                shield.innerText = '🛡️';
+                shield.innerText = '🪙';
                 shield.className = 'flying-shield';
                 shield.style.fontSize = '40px';
                 shield.style.left = '50%';
@@ -1672,13 +1672,13 @@
             revealLetter('shield'); 
             updateScoreboard();
             document.getElementById('shop-shield-count').innerText = totalShields;
-            el.feedback.innerText = "Hint purchased! -3 Shields";
+            el.feedback.innerText = "Hint purchased! -3 Coins";
             el.feedback.style.color = "green";
             msg.innerText = "Hint purchased!";
             msg.style.color = "green";
             playTone(800, 'sine', 0.2);
         } else {
-            msg.innerText = "Not enough shields!";
+            msg.innerText = "Not enough coins!";
             msg.style.color = "red";
         }
     }
@@ -1693,7 +1693,7 @@
         if (totalShields >= 10) {
             totalShields -= 10;
             updateScoreboard();
-            el.feedback.innerText = "Safe Skip! -10 Shields";
+            el.feedback.innerText = "Safe Skip! -10 Coins";
             el.feedback.style.color = "green";
             speak("Safe skip.", false);
             playTone(800, 'sine', 0.2);
@@ -1703,12 +1703,12 @@
             stopMicrophone();
             setTimeout(nextWord, 1000);
         } else {
-            msg.innerText = "Not enough shields!";
+            msg.innerText = "Not enough coins!";
             msg.style.color = "red";
         }
     }
 
-    function buyDoubleShields() {
+    function buyDoubleCoins() {
         const msg = document.getElementById('shop-message');
         if (doubleShieldsActive) {
             msg.innerText = "Already active!";
@@ -1720,14 +1720,14 @@
             doubleShieldsActive = true;
             updateScoreboard();
             document.getElementById('shop-shield-count').innerText = totalShields;
-            el.feedback.innerText = "Double Shields Active! Next word worth 2x.";
+            el.feedback.innerText = "Double Coins Active! Next word worth 2x.";
             el.feedback.style.color = "purple";
             updateDifficultyDisplay();
-            msg.innerText = "Double Shields Active!";
+            msg.innerText = "Double Coins Active!";
             msg.style.color = "purple";
             playTone(800, 'sine', 0.2);
         } else {
-            msg.innerText = "Not enough shields!";
+            msg.innerText = "Not enough coins!";
             msg.style.color = "red";
         }
     }
