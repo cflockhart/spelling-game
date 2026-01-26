@@ -339,8 +339,8 @@
     <div id="status-bar">Waiting for database...</div>
     <div style="margin-top: 15px; display: flex; justify-content: center;">
         <select id="theme-select" onchange="changeTheme()" style="width: auto; min-width: 200px; background-color: #cfd8dc; color: #333;">
-            <option value="Soccer">Soccer Theme</option>
             <option value="Default">Default Theme</option>
+            <option value="Soccer">Soccer Theme</option>
             <option value="Space">Space Theme 🚀</option>
             <option value="Jungle">Jungle Theme 🦁</option>
             <option value="Retro">Retro Arcade 🕹️</option>
@@ -621,7 +621,7 @@
             styles: { backgroundColor: "#e0f7fa", containerBorderColor: "#006064", fontFamily: "'Brush Script MT', cursive", titleColor: "#006064" }
         }
     };
-    let currentThemeConfig = themeData["Soccer"];
+    let currentThemeConfig = themeData["Default"];
 
     const el = {
         word: document.getElementById('word-area'),
