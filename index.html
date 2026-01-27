@@ -131,6 +131,7 @@
         #restart-btn { background-color: var(--danger); color: white; grid-column: span 2; }
         #end-game-btn { background-color: #8E8E93; color: white; grid-column: span 2; }
         #high-scores-btn { background-color: var(--secondary); color: white; grid-column: span 2; }
+        #friend-btn { background-color: #e91e63; color: white; grid-column: span 2; }
         #shop-btn { background-color: #AF52DE; color: white; grid-column: span 2; }
 
         #scoreboard { 
@@ -273,6 +274,9 @@
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
@@ -347,6 +351,7 @@
         <button type="button" id="restart-btn" onclick="restartGame()" style="display:none; background-color: #d32f2f; color: white; grid-column: span 2;">🔄 Restart Game</button>
         <button type="button" id="end-game-btn" onclick="endGame()" style="background-color: #546e7a; color: white; grid-column: span 2;">🏁 End Game</button>
         <button type="button" id="high-scores-btn" onclick="showHighScores()" style="background-color: #8e24aa; color: white; grid-column: span 2;">🏆 High Scores</button>
+        <button type="button" id="friend-btn" onclick="openFriendChallenge()" style="background-color: #e91e63; color: white; grid-column: span 2;">⚔️ Friend Challenge</button>
         <button type="button" id="shop-btn" onclick="openShop()" style="background-color: #7b1fa2; color: white; grid-column: span 2;">🛒 Shop</button>
     </div>
     
@@ -393,7 +398,11 @@
 
 <div id="high-scores-modal" class="modal">
     <div class="modal-content">
-        <h2>🏆 High Scores</h2>
+        <h2>🏆 Leaderboard</h2>
+        <div style="display:flex; justify-content:center; gap:10px; margin-bottom:15px;">
+            <button onclick="showLocalScores()" id="btn-local-scores" style="background-color: #4caf50; color: white; padding: 8px 16px; font-size: 14px;">Local Bests</button>
+            <button onclick="showGlobalScores()" id="btn-global-scores" style="background-color: #ccc; color: white; padding: 8px 16px; font-size: 14px;">Global Bank 🌍</button>
+        </div>
         <table id="high-scores-table" style="width:100%; text-align:left; border-collapse: collapse;">
             <thead>
                 <tr style="background-color: #f2f2f2; border-bottom: 2px solid #ddd;">
@@ -405,8 +414,9 @@
             </thead>
             <tbody></tbody>
         </table>
+        <div id="leaderboard-loading" style="display:none; margin: 20px; color: #666;">Loading global scores...</div>
         <button onclick="closeHighScores()" style="background-color: #546e7a; color: white; margin-top: 15px;">Close</button>
-        <button onclick="clearHighScores()" style="background-color: #c62828; color: white; margin-top: 15px; margin-left: 10px;">Clear Scores</button>
+        <button id="clear-local-btn" onclick="clearHighScores()" style="background-color: #c62828; color: white; margin-top: 15px; margin-left: 10px;">Clear Local</button>
     </div>
 </div>
 
@@ -427,10 +437,58 @@
 <div id="login-modal" class="modal" style="display:block; background-color: rgba(0,0,0,0.9);">
     <div class="modal-content">
         <h2>👋 Welcome!</h2>
-        <p>Enter your name to access your Coin Bank:</p>
+        <p>Enter your name to access your Coin Bank (Local):</p>
         <input type="text" id="start-player-name" placeholder="Player Name" style="padding: 12px; font-size: 18px; width: 80%; margin-bottom: 20px; border-radius: 8px; border: 1px solid #ccc;">
         <br>
-        <button onclick="startGameUser()" style="background-color: #4caf50; color: white; padding: 12px 30px; font-size: 18px; border-radius: 8px; border: none; cursor: pointer;">Start Game</button>
+        <button onclick="startGameUser()" style="background-color: #4caf50; color: white; padding: 12px 30px; font-size: 18px; border-radius: 8px; border: none; cursor: pointer;">Start Game (Local)</button>
+        <hr style="margin: 20px 0; border: 0; border-top: 1px solid #ccc;">
+        <p>Or play in <b>Global Mode</b> to save coins online:</p>
+        <button onclick="openGlobalLogin()" style="background-color: #2196f3; color: white; padding: 12px 30px; font-size: 18px; border-radius: 8px; border: none; cursor: pointer;">Global Login / Signup 🌍</button>
+    </div>
+</div>
+
+<div id="global-login-modal" class="modal">
+    <div class="modal-content">
+        <h2>🌍 Global Mode</h2>
+        <div id="global-auth-forms">
+            <div id="login-form">
+                <h3>Login</h3>
+                <input type="text" id="global-username" placeholder="Username" style="margin-bottom: 10px;">
+                <input type="password" id="global-password" placeholder="Password" style="margin-bottom: 10px;">
+                <button onclick="globalLogin()" style="background-color: #4caf50; color: white; margin-bottom: 10px;">Login</button>
+                <p>Don't have an account? <a href="#" onclick="showRegister()" style="color: #2196f3;">Register</a></p>
+            </div>
+            <div id="register-form" style="display:none">
+                <h3>Register</h3>
+                <input type="text" id="reg-username" placeholder="Username" style="margin-bottom: 10px;">
+                <input type="password" id="reg-password" placeholder="Password" style="margin-bottom: 10px;">
+                <button onclick="globalRegister()" style="background-color: #ff9800; color: white; margin-bottom: 10px;">Register</button>
+                <p>Already have an account? <a href="#" onclick="showLogin()" style="color: #2196f3;">Login</a></p>
+            </div>
+        </div>
+        <div id="global-message" style="color: red; margin-top: 10px;"></div>
+        <button onclick="closeGlobalModal()" style="background-color: #546e7a; color: white; margin-top: 10px;">Close</button>
+    </div>
+</div>
+
+<div id="friend-challenge-modal" class="modal">
+    <div class="modal-content">
+        <h2>⚔️ Friend Challenge</h2>
+        <p>Enter a username to find a friend:</p>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <input type="text" id="friend-username" placeholder="Username" style="padding: 12px; flex-grow: 1;">
+            <button onclick="findFriend()" style="padding: 12px; width: auto; background-color: #2196f3; color: white;">Search</button>
+        </div>
+        
+        <div id="friend-result" style="display:none; margin-top: 20px; padding: 15px; background: #f1f8e9; border-radius: 8px; border: 1px solid #c5e1a5;">
+            <h3 id="friend-name-display" style="margin-top:0"></h3>
+            <p>Total Coins: <strong id="friend-coins"></strong></p>
+            <p>Best Session: <strong id="friend-best"></strong></p>
+            <button onclick="startChallenge()" style="background-color: #ff9800; color: white; width: 100%; margin-top: 10px;">Challenge This Score! 🎯</button>
+        </div>
+        <div id="friend-error" style="color: #c62828; margin-top: 10px;"></div>
+        
+        <button onclick="closeFriendChallenge()" style="background-color: #546e7a; color: white; margin-top: 15px;">Close</button>
     </div>
 </div>
 
@@ -453,6 +511,22 @@
     let activePool = [];
     let currentWord = "";
     let currentPlayer = "";
+    let isGlobalMode = false;
+    let globalUser = null;
+
+    // FIREBASE CONFIGURATION - REPLACE WITH YOUR OWN
+    const firebaseConfig = {
+        apiKey: "YOUR_API_KEY",
+        authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+        projectId: "YOUR_PROJECT_ID",
+        storageBucket: "YOUR_PROJECT_ID.appspot.com",
+        messagingSenderId: "YOUR_SENDER_ID",
+        appId: "YOUR_APP_ID"
+    };
+    if (typeof firebase !== 'undefined') firebase.initializeApp(firebaseConfig);
+    const db = typeof firebase !== 'undefined' ? firebase.firestore() : null;
+    const auth = typeof firebase !== 'undefined' ? firebase.auth() : null;
+
     let playerScore = 0;
     let shieldScore = 0;
     let totalShields = 0;
@@ -480,6 +554,8 @@
     let retryShieldScore = 0;
     let highScores = JSON.parse(localStorage.getItem('spellingBeeHighScores')) || [];
     let keyboardInstructionsShown = false;
+    let challengeTargetScore = 0;
+    let challengeOpponent = "";
 
     const themeData = {
         "Soccer": {
@@ -777,6 +853,19 @@
             bank[currentPlayer] = totalShields;
             localStorage.setItem('spellingBeeBank', JSON.stringify(bank));
         }
+
+        if (isGlobalMode && globalUser && db) {
+            let maxLocal = 0;
+            if (highScores && highScores.length > 0) {
+                 maxLocal = Math.max(...highScores.map(s => s.score));
+            }
+            db.collection("users").doc(globalUser.uid).set({
+                username: currentPlayer,
+                totalShields: totalShields,
+                bestSessionScore: maxLocal,
+                lastPlayed: new Date()
+            }, { merge: true });
+        }
     }
 
     function loadGameState() {
@@ -814,6 +903,97 @@
         document.getElementById('login-modal').style.display = 'none';
     }
 
+    function openGlobalLogin() {
+        document.getElementById('login-modal').style.display = 'none';
+        document.getElementById('global-login-modal').style.display = 'block';
+    }
+
+    function closeGlobalModal() {
+        document.getElementById('global-login-modal').style.display = 'none';
+        document.getElementById('login-modal').style.display = 'block';
+    }
+
+    function showRegister() {
+        document.getElementById('login-form').style.display = 'none';
+        document.getElementById('register-form').style.display = 'block';
+        document.getElementById('global-message').innerText = "";
+    }
+
+    function showLogin() {
+        document.getElementById('register-form').style.display = 'none';
+        document.getElementById('login-form').style.display = 'block';
+        document.getElementById('global-message').innerText = "";
+    }
+
+    async function globalRegister() {
+        const username = document.getElementById('reg-username').value.trim();
+        const password = document.getElementById('reg-password').value;
+        const msg = document.getElementById('global-message');
+
+        if (!username || !password) {
+            msg.innerText = "Please enter username and password.";
+            return;
+        }
+        if (!db) { msg.innerText = "Firebase not initialized."; return; }
+
+        try {
+            const docRef = db.collection("usernames").doc(username.toLowerCase());
+            const docSnap = await docRef.get();
+
+            if (docSnap.exists) {
+                msg.innerText = "Username already taken.";
+                return;
+            }
+
+            const email = username + "@spellingbee.global";
+            const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+            const user = userCredential.user;
+
+            await docRef.set({ uid: user.uid });
+            await db.collection("users").doc(user.uid).set({
+                username: username,
+                totalShields: 0
+            });
+
+            handleGlobalAuthSuccess(user, username);
+        } catch (error) {
+            msg.innerText = error.message;
+        }
+    }
+
+    async function globalLogin() {
+        const username = document.getElementById('global-username').value.trim();
+        const password = document.getElementById('global-password').value;
+        const msg = document.getElementById('global-message');
+
+        if (!username || !password) {
+            msg.innerText = "Please enter username and password.";
+            return;
+        }
+        if (!auth) { msg.innerText = "Firebase not initialized."; return; }
+
+        try {
+            const email = username + "@spellingbee.global";
+            const userCredential = await auth.signInWithEmailAndPassword(email, password);
+            handleGlobalAuthSuccess(userCredential.user, username);
+        } catch (error) {
+            msg.innerText = "Login failed: " + error.message;
+        }
+    }
+
+    async function handleGlobalAuthSuccess(user, username) {
+        isGlobalMode = true;
+        globalUser = user;
+        currentPlayer = username;
+        const docRef = db.collection("users").doc(user.uid);
+        const docSnap = await docRef.get();
+        if (docSnap.exists) totalShields = docSnap.data().totalShields || 0;
+        document.getElementById('global-login-modal').style.display = 'none';
+        updateScoreboard();
+        el.status.innerText = "Logged in as " + username + " (Global Mode)";
+        saveGameState(); // Sync initial state
+    }
+
     function changeTheme() {
         const theme = document.getElementById('theme-select').value;
         localStorage.setItem('spellingBeeTheme', theme);
@@ -836,7 +1016,11 @@
 
     function updateScoreboard() {
         el.scoreBoard.innerHTML = currentThemeConfig.scoreboard(shieldScore, opponentScore, streak) + ` | 🧭 ${explorerScore} | <span id="bank-target" style="display:inline-block">🏦</span> ${totalShields}`;
-        
+        if (challengeOpponent) {
+            el.scoreBoard.innerHTML += `<br><span style="font-size:0.9em; color:#ff9800; margin-top:5px; display:inline-block;">⚔️ vs ${challengeOpponent}: Target ${challengeTargetScore}</span>`;
+            if (shieldScore > challengeTargetScore) el.scoreBoard.innerHTML += " ✅";
+        }
+
         el.scoreBoard.classList.remove('streak-5', 'streak-10', 'streak-20');
         if (streak >= 20) el.scoreBoard.classList.add('streak-20');
         else if (streak >= 10) el.scoreBoard.classList.add('streak-10');
@@ -972,6 +1156,8 @@
         retryShieldScore = 0;
         doubleShieldsActive = false;
         keyboardInstructionsShown = false;
+        challengeTargetScore = 0;
+        challengeOpponent = "";
         currentWord = "";
         stopGameTimer();
         stopTimer();
@@ -1620,6 +1806,88 @@
     }
 
     function showHighScores() {
+        showLocalScores();
+        document.getElementById('high-scores-modal').style.display = "block";
+    }
+
+    function openFriendChallenge() {
+        if (!isGlobalMode) {
+            alert("Please log in to Global Mode first!");
+            openGlobalLogin();
+            return;
+        }
+        document.getElementById('friend-challenge-modal').style.display = 'block';
+        document.getElementById('friend-result').style.display = 'none';
+        document.getElementById('friend-error').innerText = "";
+        document.getElementById('friend-username').value = "";
+    }
+
+    function closeFriendChallenge() {
+        document.getElementById('friend-challenge-modal').style.display = 'none';
+    }
+
+    async function findFriend() {
+        const username = document.getElementById('friend-username').value.trim().toLowerCase();
+        const errorDiv = document.getElementById('friend-error');
+        const resultDiv = document.getElementById('friend-result');
+        
+        if (!username) return;
+        
+        errorDiv.innerText = "Searching...";
+        resultDiv.style.display = 'none';
+
+        try {
+            const docRef = db.collection("usernames").doc(username);
+            const docSnap = await docRef.get();
+
+            if (!docSnap.exists) {
+                errorDiv.innerText = "User not found.";
+                return;
+            }
+
+            const uid = docSnap.data().uid;
+            const userSnap = await db.collection("users").doc(uid).get();
+
+            if (userSnap.exists) {
+                const data = userSnap.data();
+                document.getElementById('friend-name-display').innerText = data.username;
+                document.getElementById('friend-coins').innerText = data.totalShields || 0;
+                document.getElementById('friend-best').innerText = data.bestSessionScore || 0;
+                
+                // Store for challenge
+                // We use a temp variable or just read from DOM in startChallenge
+                // Let's attach to the button or use closure variables if we were cleaner, 
+                // but global vars work for this scope.
+                window.tempChallengeData = { target: data.bestSessionScore || 0, name: data.username };
+                
+                errorDiv.innerText = "";
+                resultDiv.style.display = 'block';
+            } else {
+                errorDiv.innerText = "User profile not found.";
+            }
+        } catch (e) {
+            console.error(e);
+            errorDiv.innerText = "Error searching for friend.";
+        }
+    }
+
+    function startChallenge() {
+        if (!window.tempChallengeData) return;
+        closeFriendChallenge();
+        restartGame();
+        challengeTargetScore = window.tempChallengeData.target;
+        challengeOpponent = window.tempChallengeData.name;
+        updateScoreboard();
+        el.status.innerText = `Challenging ${challengeOpponent}! Beat ${challengeTargetScore} coins!`;
+        speak(`Challenge started. Beat ${challengeOpponent}'s score of ${challengeTargetScore}.`, false);
+    }
+
+    function showLocalScores() {
+        document.getElementById('btn-local-scores').style.backgroundColor = "#4caf50";
+        document.getElementById('btn-global-scores').style.backgroundColor = "#ccc";
+        document.getElementById('clear-local-btn').style.display = "inline-block";
+        document.getElementById('leaderboard-loading').style.display = "none";
+
         const tbody = document.querySelector('#high-scores-table tbody');
         tbody.innerHTML = "";
         highScores.sort((a, b) => b.score - a.score);
@@ -1627,7 +1895,31 @@
             const row = tbody.insertRow();
             row.innerHTML = `<td style="padding: 8px;">${index + 1}</td><td style="padding: 8px;">${score.name}</td><td style="padding: 8px;">${score.score}</td><td style="padding: 8px;">${score.date}</td>`;
         });
-        document.getElementById('high-scores-modal').style.display = "block";
+    }
+
+    function showGlobalScores() {
+        if (!db) return;
+        document.getElementById('btn-local-scores').style.backgroundColor = "#ccc";
+        document.getElementById('btn-global-scores').style.backgroundColor = "#2196f3";
+        document.getElementById('clear-local-btn').style.display = "none";
+        document.getElementById('leaderboard-loading').style.display = "block";
+        
+        const tbody = document.querySelector('#high-scores-table tbody');
+        tbody.innerHTML = "";
+
+        db.collection("users").orderBy("totalShields", "desc").limit(10).get().then((querySnapshot) => {
+            document.getElementById('leaderboard-loading').style.display = "none";
+            let rank = 1;
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                const row = tbody.insertRow();
+                const dateStr = data.lastPlayed ? new Date(data.lastPlayed.seconds * 1000).toLocaleDateString() : "-";
+                row.innerHTML = `<td style="padding: 8px;">${rank++}</td><td style="padding: 8px;">${data.username}</td><td style="padding: 8px;">${data.totalShields}</td><td style="padding: 8px;">${dateStr}</td>`;
+            });
+        }).catch((error) => {
+            console.error("Error getting global scores:", error);
+            document.getElementById('leaderboard-loading').innerText = "Error loading scores.";
+        });
     }
 
     function closeHighScores() {
@@ -1638,7 +1930,7 @@
         if (confirm("Are you sure you want to clear all high scores?")) {
             highScores = [];
             localStorage.removeItem('spellingBeeHighScores');
-            showHighScores();
+            showLocalScores();
         }
     }
 
