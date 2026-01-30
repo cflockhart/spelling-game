@@ -272,6 +272,13 @@
             backdrop-filter: blur(4px);
             white-space: nowrap;
         }
+
+        .bonus-coin {
+            position: fixed;
+            z-index: 2001;
+            pointer-events: none;
+            filter: drop-shadow(0 0 10px #ff00ff);
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -312,6 +319,10 @@
             <option value="custom">Custom...</option>
         </select>
         <input type="number" id="custom-duration-input" placeholder="Minutes" style="display:none;" onchange="changeSettings()" min="1">
+        <div id="competition-mode-container" style="grid-column: 1 / -1; display: flex; align-items: center; justify-content: center; background: #fff; padding: 10px; border-radius: 12px; margin-top: 5px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);">
+            <input type="checkbox" id="competition-mode" onchange="toggleCompetitionMode()" style="width: 20px; height: 20px; margin-right: 10px; accent-color: var(--primary);">
+            <label for="competition-mode" style="font-weight: bold; color: var(--text-main); cursor: pointer;">Competition Mode (Speech Only 🎤)</label>
+        </div>
     </div>
     <div id="timers-wrapper">
         <div id="timer-container">
@@ -758,8 +769,20 @@
         }
     });
 
+    function isMobileDevice() {
+        // A simple check for common mobile user agents
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+
     async function init() {
         loadGameState();
+
+        if (isMobileDevice()) {
+            const competitionCheckbox = document.getElementById('competition-mode');
+            competitionCheckbox.checked = true;
+            toggleCompetitionMode();
+            document.getElementById('competition-mode-container').style.display = 'none';
+        }
 
         const savedTheme = localStorage.getItem('spellingBeeTheme');
         if (savedTheme && themeData[savedTheme]) {
@@ -1331,7 +1354,11 @@
                 b.disabled = !enable;
             }
         });
-        el.transcript.contentEditable = enable;
+        if (document.getElementById('competition-mode').checked) {
+            el.transcript.contentEditable = false;
+        } else {
+            el.transcript.contentEditable = enable;
+        }
     }
 
     function updateDifficultyDisplay() {
@@ -1342,7 +1369,11 @@
         }
         const colors = {1: "#81c784", 2: "#ffb74d", 3: "#e57373"};
         el.transcript.style.borderColor = colors[currentDifficulty] || "#bbdefb";
-        el.transcript.style.backgroundColor = (colors[currentDifficulty] || "#fff") + "22";
+        if (document.getElementById('competition-mode').checked) {
+            el.transcript.style.backgroundColor = "#e0e0e0";
+        } else {
+            el.transcript.style.backgroundColor = (colors[currentDifficulty] || "#fff") + "22";
+        }
     }
 
     function repeatWord() {
@@ -1584,6 +1615,13 @@
                 audioPhrase = "Double coins! " + audioPhrase;
             }
 
+            if (document.getElementById('competition-mode').checked) {
+                shieldScore++;
+                totalShields++;
+                animateBonusCoin();
+                audioPhrase += " Bonus Coin!";
+            }
+
             shieldsSinceLastMilestone += earned;
 
             if (isRetryMode) {
@@ -1738,6 +1776,40 @@
                 };
             }, i * 150);
         }
+    }
+
+    function toggleCompetitionMode() {
+        const isCompetition = document.getElementById('competition-mode').checked;
+        el.transcript.contentEditable = !isCompetition;
+        updateDifficultyDisplay();
+    }
+
+    function animateBonusCoin() {
+        const targetPlaceholder = document.getElementById('bank-target');
+        if (!targetPlaceholder) return;
+        const rect = targetPlaceholder.getBoundingClientRect();
+        const targetX = rect.left + rect.width / 2;
+        const targetY = rect.top + rect.height / 2;
+        
+        const coin = document.createElement('div');
+        coin.innerText = '🪙';
+        coin.className = 'bonus-coin';
+        coin.style.fontSize = '50px';
+        coin.style.left = '50%';
+        coin.style.top = '50%';
+        coin.style.transform = 'translate(-50%, -50%)';
+        document.body.appendChild(coin);
+
+        const animation = coin.animate([
+            { left: '50%', top: '50%', transform: 'translate(-50%, -50%) scale(0.5)', opacity: 0 },
+            { left: '50%', top: '50%', transform: 'translate(-50%, -50%) scale(1.5)', opacity: 1, offset: 0.2 },
+            { left: `${targetX}px`, top: `${targetY}px`, transform: 'translate(-50%, -50%) scale(0.5)', opacity: 0.8 }
+        ], {
+            duration: 1200,
+            easing: 'cubic-bezier(0.25, 1, 0.5, 1)'
+        });
+
+        animation.onfinish = () => coin.remove();
     }
 
     function endGame() {
