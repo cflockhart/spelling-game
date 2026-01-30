@@ -279,6 +279,34 @@
             pointer-events: none;
             filter: drop-shadow(0 0 10px #ff00ff);
         }
+
+        /* Competition Mode Radio Button Style */
+        #competition-mode {
+            -webkit-appearance: none;
+            appearance: none;
+            background-color: #fff;
+            margin: 0;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #8E8E93;
+            border-radius: 50%;
+            transform: translateY(2px);
+            display: grid;
+            place-content: center;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        #competition-mode::before {
+            content: "";
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            background-color: var(--danger);
+        }
+        #competition-mode:checked { border-color: var(--danger); }
+        #competition-mode:checked::before { transform: scale(1); }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -320,7 +348,7 @@
         </select>
         <input type="number" id="custom-duration-input" placeholder="Minutes" style="display:none;" onchange="changeSettings()" min="1">
         <div id="competition-mode-container" style="grid-column: 1 / -1; display: flex; align-items: center; justify-content: center; background: #fff; padding: 10px; border-radius: 12px; margin-top: 5px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);">
-            <input type="checkbox" id="competition-mode" onchange="toggleCompetitionMode()" style="width: 20px; height: 20px; margin-right: 10px; accent-color: var(--primary);">
+            <input type="checkbox" id="competition-mode" onchange="toggleCompetitionMode()">
             <label for="competition-mode" style="font-weight: bold; color: var(--text-main); cursor: pointer;">Competition Mode (Speech Only 🎤)</label>
         </div>
     </div>
