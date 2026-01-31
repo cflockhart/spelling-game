@@ -454,8 +454,10 @@
             <tbody></tbody>
         </table>
         <div id="leaderboard-loading" style="display:none; margin: 20px; color: #666;">Loading global scores...</div>
-        <button onclick="closeHighScores()" style="background-color: #546e7a; color: white; margin-top: 15px;">Close</button>
-        <button id="clear-local-btn" onclick="clearHighScores()" style="background-color: #c62828; color: white; margin-top: 15px; margin-left: 10px;">Clear Local</button>
+        <div style="display: flex; gap: 10px; margin-top: 15px;">
+            <button onclick="closeHighScores()" style="background-color: #546e7a; color: white; flex: 1;">Close</button>
+            <button id="clear-local-btn" onclick="clearHighScores()" style="background-color: #c62828; color: white; flex: 1;">Clear Local</button>
+        </div>
     </div>
 </div>
 
