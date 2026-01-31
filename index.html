@@ -131,7 +131,6 @@
         #restart-btn { background-color: var(--danger); color: white; grid-column: span 2; }
         #end-game-btn { background-color: #8E8E93; color: white; grid-column: span 2; }
         #high-scores-btn { background-color: var(--secondary); color: white; grid-column: span 2; }
-        #friend-btn { background-color: #e91e63; color: white; grid-column: span 2; }
         #shop-btn { background-color: #AF52DE; color: white; grid-column: span 2; }
 
         #scoreboard { 
@@ -329,6 +328,7 @@
             <option value="Easy">Easy (One Bee)</option>
             <option value="Medium">Medium (Two Bee)</option>
             <option value="Hard">Hard (Three Bee)</option>
+            <option value="Random12">Random (One & Two Bee)</option>
             <option value="Random">Random</option>
         </select>
         <select id="timer-select" onchange="changeSettings()">
@@ -391,7 +391,6 @@
         <button type="button" id="restart-btn" onclick="restartGame()" style="display:none; background-color: #d32f2f; color: white; grid-column: span 2;">🔄 Restart Game</button>
         <button type="button" id="end-game-btn" onclick="endGame()" style="background-color: #546e7a; color: white; grid-column: span 2;">🏁 End Game</button>
         <button type="button" id="high-scores-btn" onclick="showHighScores()" style="background-color: #8e24aa; color: white; grid-column: span 2;">🏆 High Scores</button>
-        <button type="button" id="friend-btn" onclick="openFriendChallenge()" style="background-color: #e91e63; color: white; grid-column: span 2;">⚔️ Friend Challenge</button>
         <button type="button" id="shop-btn" onclick="openShop()" style="background-color: #7b1fa2; color: white; grid-column: span 2;">🛒 Shop</button>
     </div>
     
@@ -481,9 +480,6 @@
         <input type="text" id="start-player-name" placeholder="Player Name" style="padding: 12px; font-size: 18px; width: 80%; margin-bottom: 20px; border-radius: 8px; border: 1px solid #ccc;">
         <br>
         <button onclick="startGameUser()" style="background-color: #4caf50; color: white; padding: 12px 30px; font-size: 18px; border-radius: 8px; border: none; cursor: pointer;">Start Game (Local)</button>
-        <hr style="margin: 20px 0; border: 0; border-top: 1px solid #ccc;">
-        <p>Or play in <b>Global Mode</b> to save coins online:</p>
-        <button onclick="openGlobalLogin()" style="background-color: #2196f3; color: white; padding: 12px 30px; font-size: 18px; border-radius: 8px; border: none; cursor: pointer;">Global Login / Signup 🌍</button>
     </div>
 </div>
 
@@ -1151,6 +1147,11 @@
                     ...schoolLists.school_two_bee,
                     ...schoolLists.school_three_bee
                 ];
+            } else if (difficulty === "Random12") {
+                activePool = [
+                    ...schoolLists.school_one_bee,
+                    ...schoolLists.school_two_bee
+                ];
             } else {
                 const key = difficulty === "Easy" ? "school_one_bee" : 
                             difficulty === "Medium" ? "school_two_bee" : "school_three_bee";
@@ -1160,6 +1161,8 @@
         } else {
             if (difficulty === "Random") {
                 activePool = [...wordDatabase["one bee"], ...wordDatabase["two bee"], ...wordDatabase["three bee"]];
+            } else if (difficulty === "Random12") {
+                activePool = [...wordDatabase["one bee"], ...wordDatabase["two bee"]];
             } else {
                 const key = difficulty === "Easy" ? "one bee" : 
                             difficulty === "Medium" ? "two bee" : "three bee";
