@@ -408,6 +408,7 @@
             <option value="Jungle">Jungle Theme 🦁</option>
             <option value="Retro">Retro Arcade 🕹️</option>
             <option value="Basketball">Basketball 🏀</option>
+            <option value="Baseball">Baseball Theme ⚾</option>
             <option value="AmericanFootball">American Football 🏈</option>
             <option value="Hockey">Hockey 🏒</option>
             <option value="Luxury">Luxury Goods 💎</option>
@@ -691,6 +692,22 @@
             gameOver: "Buzzer Beater! You lost!",
             gameOverAudio: "Game Over.",
             styles: { backgroundColor: "#fff3e0", containerBorderColor: "#ff9800", fontFamily: "Impact, sans-serif", titleColor: "#e65100" }
+        },
+        "Baseball": {
+            title: "⚾ Baseball Spelling Series",
+            startBtn: "1. Play Ball! ⚾",
+            submitBtn: "✅ Swing!",
+            passBtn: "5. Bunt (-5)",
+            startInstruction: "Click 'Play Ball' to Start",
+            scoreboard: (p, o, s) => `HOME: ${p} - VISITOR: ${o} | STREAK: ${s} ⚾`,
+            correct: "⚾ Home Run! Correct!",
+            incorrect: "❌ Strike Three! Correct: ",
+            pass: "⚾ Walk! -5 Points",
+            skip: "⏭️ Ejected! The word was ",
+            hint: "💡 Coach Visit! -1 Point",
+            gameOver: "Struck Out!",
+            gameOverAudio: "Game Over.",
+            styles: { backgroundColor: "#fbe9e7", containerBorderColor: "#d84315", fontFamily: "'Verdana', sans-serif", titleColor: "#bf360c" }
         },
         "AmericanFootball": {
             title: "🏈 Spelling Touchdown",
